@@ -1,0 +1,74 @@
+<div class="search-container">
+    <div class="search-box">
+        <mat-form-field appearance="outline" class="search-input">
+            <mat-label>Search by college name, city, or course</mat-label>
+            <input matInput type="text" [(ngModel)]="searchQuery" (keyup.enter)="search()">
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        <div class="search-buttons">
+            <button mat-raised-button color="primary" (click)="search()">Search</button>
+            <button mat-stroked-button color="accent" [routerLink]="['/colleges']">Advanced</button>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Desktop View -->
+    <ng-container *ngIf="!isMobile">
+        <section *ngFor="let section of categorySections" class="category-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <mat-icon>{{ section.icon }}</mat-icon>
+                    <h2>{{ section.title }}</h2>
+                </div>
+                <p class="section-description">{{ section.description }}</p>
+            </div>
+
+            <div class="scroll-container">
+                <button mat-icon-button class="scroll-button left" (click)="scrollLeft(section.title)">
+                    <mat-icon>chevron_left</mat-icon>
+                </button>
+
+                <div class="colleges-scroll" [id]="'scroll-' + section.title">
+                    <app-college-info-card *ngFor="let college of section.colleges" [college]="college"
+                        (click)="navigateToDetails(college.id)" class="scroll-item"></app-college-info-card>
+                </div>
+
+                <button mat-icon-button class="scroll-button right" (click)="scrollRight(section.title)">
+                    <mat-icon>chevron_right</mat-icon>
+                </button>
+            </div>
+        </section>
+    </ng-container>
+
+    <!-- Mobile View -->
+  <ng-container *ngIf="isMobile">
+    <mat-accordion>
+      <mat-expansion-panel 
+        *ngFor="let section of categorySections"
+        [expanded]="section.expanded"
+        (opened)="toggleExpansion(section)"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <div class="mobile-section-header">
+              <mat-icon>{{ section.icon }}</mat-icon>
+              <span>{{ section.title }}</span>
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <p class="mobile-section-description">{{ section.description }}</p>
+
+        <div class="mobile-colleges-grid">
+          <app-college-info-card 
+            *ngFor="let college of section.colleges"
+            [college]="college"
+            (click)="navigateToDetails(college.id)"
+            class="mobile-college-card"
+          ></app-college-info-card>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </ng-container>
+</div>

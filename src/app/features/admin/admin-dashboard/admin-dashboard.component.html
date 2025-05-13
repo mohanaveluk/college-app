@@ -1,0 +1,151 @@
+<div class="admin-container">
+    <div class="page-header">
+      <div class="container">
+        <h1>Admin Dashboard</h1>
+      </div>
+    </div>
+    
+    <div class="container">
+      <div class="admin-actions">
+        <div class="search-bar">
+          <mat-form-field appearance="outline">
+            <mat-label>Search Colleges</mat-label>
+            <input 
+              matInput 
+              [(ngModel)]="searchTerm" 
+              (keyup)="applyFilter()"
+              placeholder="Search by name, city, state..."
+            >
+            <button 
+              *ngIf="searchTerm" 
+              matSuffix 
+              mat-icon-button 
+              aria-label="Clear" 
+              (click)="searchTerm=''; applyFilter()"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-icon matSuffix *ngIf="!searchTerm">search</mat-icon>
+          </mat-form-field>
+        </div>
+        
+        <button 
+          mat-raised-button 
+          color="primary" 
+          class="btn-new-college"
+          [routerLink]="['/admin/add-college']"
+        >
+          <mat-icon>add</mat-icon>
+          Add New College
+        </button>
+      </div>
+      
+      <mat-card>
+        <mat-card-content>
+          <div class="table-container">
+            <table mat-table [dataSource]="colleges" matSort (matSortChange)="sortData($event)">
+              <!-- ID Column -->
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                <td mat-cell *matCellDef="let college"> {{ college.id }} </td>
+              </ng-container>
+              
+              <!-- Name Column -->
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                <td mat-cell *matCellDef="let college"> {{ college.name }} </td>
+              </ng-container>
+              
+              <!-- City Column -->
+              <ng-container matColumnDef="city">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> City </th>
+                <td mat-cell *matCellDef="let college"> {{ college.city }} </td>
+              </ng-container>
+              
+              <!-- State Column -->
+              <ng-container matColumnDef="state">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> State </th>
+                <td mat-cell *matCellDef="let college"> {{ college.state }} </td>
+              </ng-container>
+              
+              <!-- Category Column -->
+              <ng-container matColumnDef="category">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Category </th>
+                <td mat-cell *matCellDef="let college"> {{ college.category | titlecase }} </td>
+              </ng-container>
+              
+              <!-- Rating Column -->
+              <ng-container matColumnDef="rating">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Rating </th>
+                <td mat-cell *matCellDef="let college"> {{ college.rating }} </td>
+              </ng-container>
+              
+              <!-- Status Column -->
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef> Status </th>
+                <td mat-cell *matCellDef="let college">
+                  <mat-slide-toggle
+                    [checked]="college.active"
+                    (change)="toggleCollegeStatus(college)"
+                    color="primary"
+                  ></mat-slide-toggle>
+                </td>
+              </ng-container>
+              
+              <!-- Actions Column -->
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <td mat-cell *matCellDef="let college">
+                  <button 
+                    mat-icon-button 
+                    color="primary" 
+                    [routerLink]="['/colleges', college.id]"
+                    matTooltip="View Details"
+                  >
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                  <button 
+                    mat-icon-button 
+                    color="accent" 
+                    [routerLink]="['/admin/edit-college', college.id]"
+                    matTooltip="Edit"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button 
+                    mat-icon-button 
+                    color="warn"
+                    (click)="deleteCollege(college)"
+                    matTooltip="Delete"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+              
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr 
+                mat-row 
+                *matRowDef="let college; columns: displayedColumns;"
+                [ngClass]="{'inactive-row': !college.active}"
+              ></tr>
+              
+              <!-- Row shown when no matching data -->
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="8">No data matching the filter "{{searchTerm}}"</td>
+              </tr>
+            </table>
+            
+            <mat-paginator
+              [pageSize]="10"
+              [pageSizeOptions]="[5, 10, 20]"
+              showFirstLastButtons
+              aria-label="Select page of colleges"
+              (page)="handlePageEvent($event)"
+            >
+            </mat-paginator>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>

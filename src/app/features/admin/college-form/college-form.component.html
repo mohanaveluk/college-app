@@ -1,0 +1,190 @@
+<div class="page-header">
+    <div class="container">
+      <h1>{{ isEditMode ? 'Edit College' : 'Add New College' }}</h1>
+    </div>
+  </div>
+  
+  <div class="container">
+    <mat-card>
+      <mat-card-content>
+        <form [formGroup]="collegeForm" (ngSubmit)="onSubmit()">
+          <div class="form-section">
+            <h2>Basic Information</h2>
+            
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>College Name</mat-label>
+                <input matInput formControlName="name" required>
+                <mat-error *ngIf="collegeForm.get('name')?.hasError('required')">
+                  Name is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+            
+            <div class="form-row grid-col-2">
+              <mat-form-field appearance="outline">
+                <mat-label>City</mat-label>
+                <input matInput formControlName="city" required>
+                <mat-error *ngIf="collegeForm.get('city')?.hasError('required')">
+                  City is required
+                </mat-error>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline">
+                <mat-label>State</mat-label>
+                <input matInput formControlName="state" required>
+                <mat-error *ngIf="collegeForm.get('state')?.hasError('required')">
+                  State is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+            
+            <div class="form-row grid-col-2">
+              <mat-form-field appearance="outline">
+                <mat-label>Category</mat-label>
+                <mat-select formControlName="category" required>
+                  <mat-option value="deemed">Deemed University</mat-option>
+                  <mat-option value="affiliated">Affiliated College</mat-option>
+                  <mat-option value="autonomous">Autonomous College</mat-option>
+                  <mat-option value="other">Other</mat-option>
+                </mat-select>
+                <mat-error *ngIf="collegeForm.get('category')?.hasError('required')">
+                  Category is required
+                </mat-error>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline">
+                <mat-label>Established Year</mat-label>
+                <input matInput formControlName="established" required type="number">
+                <mat-error *ngIf="collegeForm.get('established')?.hasError('required')">
+                  Established year is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+            
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Address</mat-label>
+                <textarea matInput formControlName="address" rows="2" required></textarea>
+                <mat-error *ngIf="collegeForm.get('address')?.hasError('required')">
+                  Address is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+            
+            <div class="form-row grid-col-2">
+              <mat-form-field appearance="outline">
+                <mat-label>Rating</mat-label>
+                <input matInput formControlName="rating" type="number" min="0" max="5" step="0.1" required>
+                <mat-hint>Value between 0 and 5</mat-hint>
+                <mat-error *ngIf="collegeForm.get('rating')?.hasError('required')">
+                  Rating is required
+                </mat-error>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline">
+                <mat-label>Image URL</mat-label>
+                <input matInput formControlName="imageUrl" required>
+                <mat-error *ngIf="collegeForm.get('imageUrl')?.hasError('required')">
+                  Image URL is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+            
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Description</mat-label>
+                <textarea matInput formControlName="description" rows="4" required></textarea>
+                <mat-error *ngIf="collegeForm.get('description')?.hasError('required')">
+                  Description is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          
+          <mat-divider></mat-divider>
+          
+          <div class="form-section">
+            <h2>Courses</h2>
+            
+            <div class="form-row">
+              <div class="courses-input-group">
+                <mat-form-field appearance="outline" class="course-input">
+                  <mat-label>Course</mat-label>
+                  <input 
+                    matInput 
+                    [formControl]="courseCtrl" 
+                    placeholder="e.g., Computer Science"
+                    (keyup.enter)="addCourse()"
+                  >
+                </mat-form-field>
+                
+                <button 
+                  type="button" 
+                  mat-raised-button 
+                  color="primary" 
+                  (click)="addCourse()"
+                  [disabled]="!courseCtrl.value"
+                >
+                  Add
+                </button>
+              </div>
+              
+              <div class="courses-list" *ngIf="courses.length > 0">
+                <mat-chip-listbox>
+                  <mat-chip
+                    *ngFor="let course of courses"
+                    (removed)="removeCourse(course)"
+                  >
+                    {{ course }}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                  </mat-chip>
+                </mat-chip-listbox>
+              </div>
+            </div>
+          </div>
+          
+          <mat-divider></mat-divider>
+          
+          <div class="form-section">
+            <h2>Contact Information</h2>
+            
+            <div formGroupName="contact">
+              <div class="form-row grid-col-3">
+                <mat-form-field appearance="outline">
+                  <mat-label>Phone</mat-label>
+                  <input matInput formControlName="phone" required>
+                  <mat-error *ngIf="collegeForm.get('contact.phone')?.hasError('required')">
+                    Phone is required
+                  </mat-error>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline">
+                  <mat-label>Email</mat-label>
+                  <input matInput formControlName="email" required type="email">
+                  <mat-error *ngIf="collegeForm.get('contact.email')?.hasError('required')">
+                    Email is required
+                  </mat-error>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline">
+                  <mat-label>Website</mat-label>
+                  <input matInput formControlName="website" required>
+                  <mat-error *ngIf="collegeForm.get('contact.website')?.hasError('required')">
+                    Website is required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-actions">
+            <button type="button" mat-button (click)="goBack()">Cancel</button>
+            <button type="submit" mat-raised-button color="primary" [disabled]="collegeForm.invalid">
+              {{ isEditMode ? 'Update College' : 'Add College' }}
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>

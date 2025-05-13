@@ -1,0 +1,30 @@
+<footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>College Finder</h3>
+            <p>Find the perfect college for your future.</p>
+          </div>
+          
+          <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+              <li><a [routerLink]="['/']">Home</a></li>
+              <li><a [routerLink]="['/colleges']">Colleges</a></li>
+              <li><a [routerLink]="['/about']">About</a></li>
+              <li><a [routerLink]="['/contact']">Contact</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-section">
+            <h3>Contact</h3>
+            <p>Email: info&#64;collegefinder.com</p>
+            <p>Phone: (123) 456-7890</p>
+          </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; {{year}} College Finder. All Rights Reserved.</p>
+        </div>
+      </div>
+    </footer>

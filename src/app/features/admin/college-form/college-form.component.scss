@@ -1,0 +1,57 @@
+.form-section {
+    margin-bottom: 32px;
+    padding-top: 16px;
+  }
+  
+  .form-section h2 {
+    margin-bottom: 16px;
+    color: rgba(0, 0, 0, 0.7);
+  }
+  
+  .form-row {
+    margin-bottom: 16px;
+  }
+  
+  .full-width {
+    width: 100%;
+  }
+  
+  .grid-col-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  
+  .grid-col-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+  
+  .courses-input-group {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .course-input {
+    flex: 1;
+  }
+  
+  .courses-list {
+    margin-top: 16px;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 24px;
+  }
+  
+  @media (max-width: 768px) {
+    .grid-col-2,
+    .grid-col-3 {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }

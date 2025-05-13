@@ -1,0 +1,74 @@
+.search-card {
+    margin-bottom: 24px;
+  }
+  
+  .full-width {
+    width: 100%;
+  }
+  
+  .flex-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  
+  .flex-row mat-form-field {
+    flex: 1;
+  }
+  
+  
+  .flex-row mat-form-field.double-width {
+    flex: 2;
+  }
+
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  
+  .radius-search {
+    margin-top: 16px;
+  }
+  
+  .radius-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  
+  .radius-controls mat-slider {
+    flex: 1;
+  }
+  
+  .coordinates-inputs {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .coordinates-inputs mat-form-field {
+    flex: 1;
+  }
+  
+  @media (max-width: 768px) {
+    .flex-row {
+      flex-direction: column;
+      gap: 0;
+    }
+    
+    .coordinates-inputs {
+      flex-direction: column;
+      gap: 0;
+    }
+    
+    .form-actions {
+      flex-direction: column-reverse;
+    }
+    
+    .form-actions button {
+      width: 100%;
+    }
+  }

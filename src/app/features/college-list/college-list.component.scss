@@ -1,0 +1,77 @@
+.colleges-container {
+    min-height: calc(100vh - 64px - 200px);
+  }
+  
+  .view-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 16px 0;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  .filters-applied {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .filters-label {
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  .view-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .results-count {
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  .college-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    padding: 48px 0;
+  }
+  
+  .no-results {
+    text-align: center;
+    padding: 48px 0;
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  .no-results mat-icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+    margin-bottom: 16px;
+  }
+  
+  .load-more {
+    text-align: center;
+    margin-top: 32px;
+    margin-bottom: 32px;
+  }
+  
+  @media (max-width: 768px) {
+    .view-options {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .view-controls {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }

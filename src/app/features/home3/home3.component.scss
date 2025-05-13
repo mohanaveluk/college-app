@@ -1,0 +1,225 @@
+.search-container {
+    padding: 24px 24px 0 24px;
+    background: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .search-input {
+    flex: 1;
+    margin-bottom: 0;
+  }
+  
+  .search-buttons {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .container {
+    width: calc(100% - 50px);
+    max-width: calc(100% - 30px);
+    margin: 0 auto;
+    padding: 24px;
+  }
+  
+  .category-section {
+    margin-bottom: 48px;
+  
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  .section-header {
+    margin-bottom: 24px;
+  }
+  
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  
+    mat-icon {
+      color: #3f51b5;
+    }
+  
+    h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+  }
+  
+  .section-description {
+    color: rgba(0, 0, 0, 0.6);
+    margin: 0;
+  }
+  
+  .scroll-container {
+    position: relative;
+    margin: 0 -24px;
+    padding: 0 24px;
+  
+    .scroll-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.5   );
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      z-index: 2;
+      color: #3f51b5;
+  
+      &.left {
+        left: 24px;
+        transform: translateX(-50%) translateY(-50%);
+      }
+  
+      &.right {
+        right: 24px;
+        transform: translateX(50%) translateY(-50%);
+      }
+  
+      &:hover {
+        background: rgba(255, 255, 255, 1);
+      }
+    }
+  }
+  
+  .colleges-scroll {
+    display: flex;
+    gap: 16px;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    padding: 16px 0;
+  }
+  
+  .scroll-item {
+    flex: 0 0 270px;
+    transition: transform 0.3s ease;
+  
+    &:hover {
+      transform: translateY(-4px);
+    }
+  }
+  
+  // Mobile Styles
+.mobile-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  
+    mat-icon {
+      color: #3f51b5;
+    }
+  
+    span {
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+  }
+  
+  .mobile-section-description {
+    color: rgba(0, 0, 0, 0.6);
+    margin: 16px 0;
+    font-size: 0.9rem;
+  }
+  
+  .mobile-colleges-grid {
+    display: grid;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  
+  .mobile-college-card {
+    width: 100%;
+  }
+  
+  @media (max-width: 768px) {
+
+    .container {
+        width: calc(100%);
+        max-width: calc(100%);
+        margin: 0 auto;
+        padding: 24px;
+      }
+
+    .search-container {
+      padding: 12px;
+    }
+  
+    .search-box {
+      flex-direction: column;
+      gap: 12px;
+    }
+  
+    .search-buttons {
+      width: 100%;
+  
+      button {
+        flex: 1;
+      }
+    }
+
+
+    .container {
+        padding: 12px;
+    }
+
+    mat-expansion-panel {
+        margin-bottom: 8px;
+    }
+
+    .mobile-colleges-grid {
+        grid-template-columns: 1fr;
+    }
+  
+    /*.scroll-item {
+      flex: 0 0 280px;
+    }*/
+  }
+
+  // Tablet Styles
+@media (min-width: 769px) and (max-width: 1024px) {
+    .scroll-item {
+      flex: 0 0 280px;
+    }
+  
+    .section-title h2 {
+      font-size: 1.3rem;
+    }
+  }
+  
+  // Touch Device Optimizations
+  @media (hover: none) {
+    .scroll-item {
+      &:hover {
+        transform: none;
+      }
+    }
+  
+    .colleges-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
+      
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  
+    .scroll-item {
+      scroll-snap-align: start;
+    }
+  }

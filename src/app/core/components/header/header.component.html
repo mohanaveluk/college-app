@@ -1,0 +1,26 @@
+<mat-toolbar color="primary">
+    <button mat-icon-button [routerLink]="['/']">
+      <mat-icon>school</mat-icon>
+    </button>
+    <span [routerLink]="['/']" class="app-title">College Finder</span>
+    
+    <span class="spacer"></span>
+    
+    <div class="desktop-menu">
+      <a mat-button [routerLink]="['/colleges']">Colleges</a>
+      <a mat-button [routerLink]="['/about']">About</a>
+      <a mat-button [routerLink]="['/contact']">Contact</a>
+      <a mat-button [routerLink]="['/admin']">Admin</a>
+    </div>
+    
+    <button mat-icon-button [matMenuTriggerFor]="menu" class="mobile-menu-button">
+      <mat-icon>menu</mat-icon>
+    </button>
+    
+    <mat-menu #menu="matMenu">
+      <a mat-menu-item [routerLink]="['/colleges']">Colleges</a>
+      <a mat-menu-item [routerLink]="['/about']">About</a>
+      <a mat-menu-item [routerLink]="['/contact']">Contact</a>
+      <a mat-menu-item [routerLink]="['/admin']">Admin</a>
+    </mat-menu>
+  </mat-toolbar>

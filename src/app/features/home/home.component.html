@@ -1,0 +1,45 @@
+<section class="hero">
+    <div class="hero-content">
+      <h1>Find Your Perfect College</h1>
+      <p>Discover thousands of colleges and universities to help you make an informed decision about your education</p>
+      
+      <div class="search-box">
+        <mat-form-field appearance="outline" class="search-input">
+          <mat-label>Search by college name, city, or course</mat-label>
+          <input matInput type="text" [(ngModel)]="searchQuery" (keyup.enter)="search()">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        <button mat-raised-button color="primary" class="search-button" (click)="search()">Search</button>
+      </div>
+      
+      <button mat-button color="accent" [routerLink]="['/colleges']">Advanced Search</button>
+    </div>
+  </section>
+  
+  <section class="container featured-section">
+    <h2>Featured Colleges</h2>
+    <div class="college-grid">
+      <app-college-card
+        *ngFor="let college of featuredColleges"
+        [college]="college"
+        (click)="navigateToDetails(college.id)"
+      ></app-college-card>
+    </div>
+    
+    <div class="text-center mt-16">
+      <button mat-raised-button color="primary" [routerLink]="['/colleges']">
+        View All Colleges
+      </button>
+    </div>
+  </section>
+
+  <section class="container categories-section">
+    <h2>Browse by Category</h2>
+    <div class="categories-grid">
+      <mat-card *ngFor="let category of categories" class="category-card" (click)="searchByCategory(category.value)">
+        <mat-icon class="category-icon">{{ category.icon }}</mat-icon>
+        <h3>{{ category.label }}</h3>
+        <p>{{ category.description }}</p>
+      </mat-card>
+    </div>
+  </section>

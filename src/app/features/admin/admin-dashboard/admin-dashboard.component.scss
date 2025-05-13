@@ -1,0 +1,54 @@
+.admin-container {
+    min-height: calc(100vh - 64px - 200px);
+  }
+  
+  .admin-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /*margin-bottom: 24px;*/
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  .admin-actions .btn-new-college {
+    margin-bottom: 20px;
+  }
+
+  .search-bar {
+    flex: 1;
+    min-width: 280px;
+  }
+  
+  .search-bar mat-form-field {
+    width: 100%;
+  }
+  
+  .table-container {
+    overflow-x: auto;
+  }
+  
+  table {
+    width: 100%;
+  }
+  
+  .inactive-row {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: rgba(0, 0, 0, 0.5);
+  }
+  
+  @media (max-width: 768px) {
+    .admin-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .mat-column-id,
+    .mat-column-rating {
+      display: none;
+    }
+    
+    .mat-cell {
+      padding: 8px;
+    }
+  }

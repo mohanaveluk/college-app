@@ -1,0 +1,28 @@
+.app-title {
+    cursor: pointer;
+    margin-left: 8px;
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+  
+  .spacer {
+    flex: 1 1 auto;
+  }
+  
+  .desktop-menu {
+    display: flex;
+  }
+  
+  .mobile-menu-button {
+    display: none;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .desktop-menu {
+      display: none;
+    }
+    
+    .mobile-menu-button {
+      display: block;
+    }
+  }
