@@ -1,16 +1,28 @@
-<div class="search-container">
+<!--<div class="search-container">
     <div class="search-box">
-        <mat-form-field appearance="outline" class="search-input">
+      <mat-form-field appearance="fill" class="category-select">
+        <mat-select [(value)]="selectedCategory" placeholder="All">
+          <mat-option *ngFor="let category of categories" [value]="category">
+            {{ category }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+        <mat-form-field appearance="fill" class="search-input">
             <mat-label>Search by college name, city, or course</mat-label>
             <input matInput type="text" [(ngModel)]="searchQuery" (keyup.enter)="search()">
-            <mat-icon matSuffix>search</mat-icon>
+            <mat-icon matSuffix (click)="search()">search</mat-icon>
         </mat-form-field>
         <div class="search-buttons">
             <button mat-raised-button color="primary" (click)="search()">Search</button>
             <button mat-stroked-button color="accent" [routerLink]="['/colleges']">Advanced</button>
         </div>
     </div>
-</div>
+</div>-->
+
+<app-search-entity
+    [initialSearchParams]="searchParams"
+    (search)="onSearch($event)">
+</app-search-entity>
 
 <div class="container">
     <!-- Desktop View -->
@@ -18,27 +30,55 @@
         <section *ngFor="let section of categorySections" class="category-section">
             <div class="section-header">
                 <div class="section-title">
-                    <mat-icon>{{ section.icon }}</mat-icon>
-                    <h2>{{ section.title }}</h2>
+                    <mat-icon>{{ section.categorySection.icon }}</mat-icon>
+                    <h2>{{ section.categorySection.title }}</h2>
                 </div>
-                <p class="section-description">{{ section.description }}</p>
+                <p class="section-description">{{ section.categorySection.description }}</p>
             </div>
-
+            
             <div class="scroll-container">
-                <button mat-icon-button class="scroll-button left" (click)="scrollLeft(section.title)">
+                <button mat-icon-button class="scroll-button left" (click)="scrollLeft(section)" *ngIf="hasScrollLeft(section)">
                     <mat-icon>chevron_left</mat-icon>
                 </button>
 
-                <div class="colleges-scroll" [id]="'scroll-' + section.title">
-                    <app-college-info-card *ngFor="let college of section.colleges" [college]="college"
-                        (click)="navigateToDetails(college.id)" class="scroll-item"></app-college-info-card>
+                <div class="colleges-scroll" [id]="getSectionId(section)" #collegesScroll>
+                    <app-college-info-card-map *ngFor="let college of section.colleges" [college]="college"
+                        (click)="navigateToDetailsPage(college.id)" class="scroll-item"></app-college-info-card-map>
                 </div>
 
-                <button mat-icon-button class="scroll-button right" (click)="scrollRight(section.title)">
+                <button mat-icon-button class="scroll-button right" (click)="scrollRight(section)" *ngIf="hasScrollRight(section)">
                     <mat-icon>chevron_right</mat-icon>
                 </button>
             </div>
         </section>
+
+
+        <!-- <section class="category-section">
+          <div class="section-header">
+              <div class="section-title">
+                  <mat-icon>{{recentSection.categorySection.icon}}</mat-icon>
+                  <h2>{{recentSection.categorySection.title}}</h2>
+              </div>
+              <p class="section-description">Colleges visited recentry</p>
+          </div>
+          
+          <div class="scroll-container">
+              <button mat-icon-button class="scroll-button left" (click)="scrollLeft(recentSection)" *ngIf="hasScrollLeft(recentSection)">
+                  <mat-icon>chevron_left</mat-icon>
+              </button>
+
+              <div class="colleges-scroll" [id]="getSectionId(recentSection)" #recentCollegesScroll>
+                  <app-college-info-card-map *ngFor="let college of recentlyViewed" [college]="college.college"
+                      (click)="navigateToDetailsPage(college.college_id)" class="scroll-item"></app-college-info-card-map>
+              </div>
+
+              <button mat-icon-button class="scroll-button right" (click)="scrollRight(recentSection)" *ngIf="hasScrollRight(recentSection)">
+                  <mat-icon>chevron_right</mat-icon>
+              </button>
+          </div>
+      </section> -->
+
+
     </ng-container>
 
     <!-- Mobile View -->
@@ -46,29 +86,41 @@
     <mat-accordion>
       <mat-expansion-panel 
         *ngFor="let section of categorySections"
-        [expanded]="section.expanded"
+        [expanded]="section.categorySection.expanded"
         (opened)="toggleExpansion(section)"
       >
         <mat-expansion-panel-header>
           <mat-panel-title>
             <div class="mobile-section-header">
-              <mat-icon>{{ section.icon }}</mat-icon>
-              <span>{{ section.title }}</span>
+              <mat-icon>{{ section.categorySection.icon }}</mat-icon>
+              <span>{{ section.categorySection.title }}</span>
             </div>
           </mat-panel-title>
         </mat-expansion-panel-header>
 
-        <p class="mobile-section-description">{{ section.description }}</p>
+        <p class="mobile-section-description">{{ section.categorySection.description }}</p>
 
         <div class="mobile-colleges-grid">
-          <app-college-info-card 
+          <app-college-info-card-map 
             *ngFor="let college of section.colleges"
             [college]="college"
-            (click)="navigateToDetails(college.id)"
+            (click)="navigateToDetailsPage(college.id)"
             class="mobile-college-card"
-          ></app-college-info-card>
+          ></app-college-info-card-map>
         </div>
       </mat-expansion-panel>
     </mat-accordion>
   </ng-container>
+
+
+    <section class="categories-section">
+      <h2>Browse by Category</h2>
+      <div class="categories-grid">
+        <mat-card *ngFor="let category of categories" class="category-card" (click)="searchByCategory(category.value)">
+          <mat-icon class="category-icon">{{ category.icon }}</mat-icon>
+          <h3>{{ category.label }}</h3>
+          <p>{{ category.description }}</p>
+        </mat-card>
+      </div>
+    </section>
 </div>

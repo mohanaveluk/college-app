@@ -20,7 +20,7 @@ export class SearchFormComponent implements OnInit {
   
   constructor(private fb: FormBuilder) {
     this.searchForm = this.fb.group({
-      name: [''],
+      keyword: [''],
       city: [''],
       state: [''],
       category: [''],
@@ -37,7 +37,7 @@ export class SearchFormComponent implements OnInit {
   
   resetForm(): void {
     this.searchForm.reset({
-      name: this.initialSearchParams.name || '',
+      keyword: this.initialSearchParams.keyword || '',
       city: this.initialSearchParams.city || '',
       state: this.initialSearchParams.state || '',
       category: this.initialSearchParams.category || '',

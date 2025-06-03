@@ -1,3 +1,5 @@
+import { CollegeModel } from "./search-response.model";
+
 export interface College {
     id: number;
     name: string;
@@ -29,7 +31,7 @@ export interface College {
   }
   
   export interface CollegeSearchParams {
-    name?: string;
+    keyword?: string;
     city?: string;
     state?: string;
     category?: string;
@@ -41,10 +43,45 @@ export interface College {
     limit?: number;
   }
 
+  export interface SearchEntityParams {
+    k?: string;
+    cs?: string;
+    page?: number;
+    limit?: number;
+  }
+
+
   export interface CategorySection {
+    id: string;
     title: string;
     description: string;
     icon: string;
     colleges: College[];
     expanded?: boolean;
+    showScrollButtons?: boolean;
+  }
+
+  export interface Section {
+    id: string;
+    title: string;
+    description: string;
+    icon: string;
+    expanded?: boolean;
+  }
+
+  export interface CategorySectionv2 {
+    categorySection: {
+      id: string;
+      title: string;
+      description: string;
+      icon: string;
+      expanded?: boolean;
+    };
+    showScrollButtons?: boolean;
+    colleges: CollegeModel[];
+
+  }
+
+  export interface CollegesByCategoryResponse {
+    results: CategorySectionv2[];
   }

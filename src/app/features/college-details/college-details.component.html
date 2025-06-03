@@ -1,12 +1,12 @@
 <div class="college-details-container" *ngIf="college">
     <div class="college-banner"
-        [ngStyle]="{'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url(' + college.imageUrl + ')'}">
+        [ngStyle]="{'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url(' + college.image_url + ')'}">
         <div class="container">
             <div class="banner-content">
                 <h1>{{ college.name }}</h1>
                 <div class="location">
                     <mat-icon>location_on</mat-icon>
-                    <span>{{ college.city }}, {{ college.state }}</span>
+                    <span>{{ college.city }}, {{ college.state.name }}</span>
                 </div>
                 <mat-chip-listbox>
                     <mat-chip [ngClass]="college.category" highlighted>
@@ -25,7 +25,7 @@
                         <mat-icon>star</mat-icon>
                         <div class="info-content">
                             <span class="info-label">Rating</span>
-                            <span class="info-value">{{ college.rating }}/5</span>
+                            <span class="info-value">{{ college.rating | number:'1.0-1' }}/5</span>
                         </div>
                     </div>
 
@@ -41,7 +41,7 @@
                         <mat-icon>school</mat-icon>
                         <div class="info-content">
                             <span class="info-label">Courses</span>
-                            <span class="info-value">{{ college.courses.length }}</span>
+                            <span class="info-value">{{ college.collegeCourses?.length }}</span>
                         </div>
                     </div>
                 </mat-card-content>
@@ -61,8 +61,8 @@
                                 <h3>Available Courses</h3>
                                 <div class="courses-list">
                                     <mat-chip-listbox>
-                                        <mat-chip *ngFor="let course of college.courses" disableRipple>
-                                            {{ course }}
+                                        <mat-chip *ngFor="let course of college.collegeCourses" disableRipple>
+                                            {{ course.course.name }}
                                         </mat-chip>
                                     </mat-chip-listbox>
                                 </div>
@@ -70,44 +70,48 @@
                         </mat-tab>
 
                         <mat-tab label="Performance">
-                            <div class="tab-content" *ngIf="college.performance">
+                            <div class="tab-content" *ngIf="!college.performances?.length">
+                                <h2>Performance Indicators</h2>
+                                <p>No performance data available.</p>
+                            </div>
+                            <div class="tab-content" *ngIf="college.performances?.length">
                                 <h2>Performance Indicators</h2>
 
                                 <div class="performance-stats">
                                     <div class="stat-item">
                                         <div class="stat-header">
                                             <span class="stat-title">Placements</span>
-                                            <span class="stat-value">{{ college.performance.placements }}%</span>
+                                            <span class="stat-value">{{ college.performances?.[0]?.placements ?? '0' }}%</span>
                                         </div>
-                                        <mat-progress-bar mode="determinate" [value]="college.performance.placements"
+                                        <mat-progress-bar mode="determinate" [value]="college.performances?.[0]?.placements ?? 0"
                                             color="primary"></mat-progress-bar>
                                     </div>
 
                                     <div class="stat-item">
                                         <div class="stat-header">
                                             <span class="stat-title">Research Output</span>
-                                            <span class="stat-value">{{ college.performance.research }}%</span>
+                                            <span class="stat-value">{{ college.performances?.[0]?.research }}%</span>
                                         </div>
-                                        <mat-progress-bar mode="determinate" [value]="college.performance.research"
+                                        <mat-progress-bar mode="determinate" [value]="college.performances?.[0]?.research"
                                             color="accent"></mat-progress-bar>
                                     </div>
 
                                     <div class="stat-item">
                                         <div class="stat-header">
                                             <span class="stat-title">Infrastructure</span>
-                                            <span class="stat-value">{{ college.performance.infrastructure }}%</span>
+                                            <span class="stat-value">{{ college.performances?.[0]?.infrastructure }}%</span>
                                         </div>
                                         <mat-progress-bar mode="determinate"
-                                            [value]="college.performance.infrastructure"
+                                            [value]="college.performances?.[0]?.infrastructure"
                                             color="primary"></mat-progress-bar>
                                     </div>
 
                                     <div class="stat-item">
                                         <div class="stat-header">
                                             <span class="stat-title">Teaching Quality</span>
-                                            <span class="stat-value">{{ college.performance.teaching }}%</span>
+                                            <span class="stat-value">{{ college.performances?.[0]?.teaching }}%</span>
                                         </div>
-                                        <mat-progress-bar mode="determinate" [value]="college.performance.teaching"
+                                        <mat-progress-bar mode="determinate" [value]="college.performances?.[0]?.teaching"
                                             color="accent"></mat-progress-bar>
                                     </div>
                                 </div>
@@ -121,17 +125,17 @@
                                 <div class="contact-info">
                                     <div class="contact-item">
                                         <mat-icon>phone</mat-icon>
-                                        <span>{{ college.contact.phone }}</span>
+                                        <span>{{ college.phone }}</span>
                                     </div>
 
                                     <div class="contact-item">
                                         <mat-icon>email</mat-icon>
-                                        <span>{{ college.contact.email }}</span>
+                                        <span>{{ college.email }}</span>
                                     </div>
 
                                     <div class="contact-item">
                                         <mat-icon>language</mat-icon>
-                                        <span>{{ college.contact.website }}</span>
+                                        <span>{{ college.website }}</span>
                                     </div>
 
                                     <div class="contact-item">

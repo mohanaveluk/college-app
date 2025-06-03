@@ -8,15 +8,15 @@
     <div class="container">
       <app-search-form
         [initialSearchParams]="searchParams"
-        (search)="onSearch($event)"
-      ></app-search-form>
+        (search)="onSearch($event)">
+      </app-search-form>
 
       <div class="view-options">
         <div class="filters-applied">
           <span *ngIf="hasFilters()" class="filters-label">Filters applied:</span>
           <mat-chip-listbox>
-            <mat-chip *ngIf="searchParams.name" (removed)="removeFilter('name')">
-              {{ searchParams.name }}
+            <mat-chip *ngIf="searchParams.keyword" (removed)="removeFilter('keyword')">
+              {{ searchParams.keyword }}
               <mat-icon matChipRemove>cancel</mat-icon>
             </mat-chip>
             <mat-chip *ngIf="searchParams.city" (removed)="removeFilter('city')">
@@ -59,18 +59,20 @@
         </div>
       </div>
 
-      <div class="loading-container" *ngIf="loading">
+      <!-- <div class="loading-container" *ngIf="loading">
         <mat-spinner></mat-spinner>
-      </div>
+      </div> -->
+      <app-loading-spinner [show]="loading" [message]="loadingMessage" *ngIf="loading"></app-loading-spinner>
+
 
       <ng-container *ngIf="!loading">
-        <div *ngIf="colleges.length > 0" [ngClass]="{'college-grid': viewMode === 'grid', 'college-list': viewMode === 'list'}">
-          <app-college-info-card 
-            *ngFor="let college of colleges" 
+        <div *ngIf="searchResults.data.length > 0" [ngClass]="{'college-grid': viewMode === 'grid', 'college-list': viewMode === 'list'}">
+          <app-college-info-card-map 
+            *ngFor="let college of searchResults.data" 
             [college]="college"
             [viewMode]="viewMode"
-            (click)="navigateToDetails(college.id)"
-          ></app-college-info-card>
+            (click)="navigateToDetail(college.id)"
+          ></app-college-info-card-map>
         </div>
 
         <div *ngIf="colleges.length === 0" class="no-results">

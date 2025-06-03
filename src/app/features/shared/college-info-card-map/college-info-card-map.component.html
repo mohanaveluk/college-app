@@ -1,0 +1,91 @@
+<mat-card class="college-card" [ngClass]="{'list-view': viewMode === 'list'}" (click)="stopPropagation($event)">
+    <div *ngIf="viewMode === 'grid'" class="card-image-container">
+      <img [src]="college.image_url! | imageFallback:'images/college/greyed.jpg'" [alt]="college.name + ' image'" class="college-card-image"  (click)="onCardClick($event)">
+      <div class="card-overlay">
+        <mat-chip-listbox>
+          <mat-chip [ngClass]="college.category" disableRipple>
+            {{ college.category | titlecase }}
+          </mat-chip>
+        </mat-chip-listbox>
+      </div>
+    </div>
+    
+    <div class="card-content-wrapper">
+      <mat-card-header (click)="onCardClick($event)">
+        <mat-card-title>{{ college.name }}</mat-card-title>
+        <mat-card-subtitle>{{ combineAddress(college) | capitalize:'first-of-each' | truncate:30 }}</mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content class="college-card-content">
+        <div *ngIf="viewMode === 'list'" class="list-view-layout">
+          <div class="list-image-container">
+            <img [src]="college.image_url" [alt]="college.name + ' image'" class="list-image">
+            <mat-chip-listbox>
+              <mat-chip [ngClass]="college.category" disableRipple>
+                {{ college.category | titlecase }}
+              </mat-chip>
+            </mat-chip-listbox>
+          </div>
+          <div class="list-content">
+            <div class="rating-wrapper">
+              <div class="rating">
+                <mat-icon [matTooltip]="'Rating: ' + college.rating + '/5'">star</mat-icon>
+                <span>{{ college.rating |  number:'1.0-1'}}</span>
+              </div>
+              <span class="established">Est. {{ college.established }}</span>
+            </div>
+            
+            <p class="description">{{ college.description | slice:0:200 }}{{ college.description.length > 200 ? '...' : '' }}</p>
+            
+            <div class="courses-wrapper">
+              <span class="courses-label">Top Courses:</span>
+              <div class="courses">
+                <mat-chip-listbox>
+                  <mat-chip *ngFor="let course of college.collegeCourses?.slice(0, 3)" disableRipple>
+                    {{ course }}
+                  </mat-chip>
+                  <mat-chip *ngIf="college.collegeCourses?.length! > 3" disableRipple>
+                    +{{ college.collegeCourses?.length! - 3 }} more
+                  </mat-chip>
+                </mat-chip-listbox>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div *ngIf="viewMode === 'grid'">
+          <div class="rating-wrapper">
+            <div class="rating">
+              <mat-icon [matTooltip]="'Rating: ' + college.rating + '/5'">star</mat-icon>
+              <span>{{ college.rating | number:'1.0-1'}}</span>
+            </div>
+            <span class="established">Est. {{ college.established }}</span>
+          </div>
+          
+          <p class="description">{{ college.description | slice:0:60 }}{{ college.description.length! > 60 ? '...' : '' }}</p>
+        </div>
+      </mat-card-content>
+      
+      <mat-card-actions>
+        <button mat-button color="primary" (click)="onCardClick($event)">DETAILS</button>
+        <button mat-button color="primary" (click)="saveCollege($event)">
+          <mat-icon>bookmark_border</mat-icon> SAVE
+        </button>
+        <div class="spacer"></div>
+        <button mat-icon-button class="menu-trigger" [matMenuTriggerFor]="menu" (click)="stopPropagation($event)">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="openShareDialog($event)">
+            <mat-icon>share</mat-icon>
+            <span>Share</span>
+          </button>
+          <button mat-menu-item (click)="saveCollege($event)">
+            <mat-icon>bookmark_border</mat-icon>
+            <span>Save</span>
+          </button>
+        </mat-menu>
+      </mat-card-actions>
+    </div>
+  </mat-card>

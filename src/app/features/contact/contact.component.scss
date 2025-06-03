@@ -64,6 +64,30 @@
     margin-top: 16px;
   }
   
+  .thank-you-message {
+    text-align: center;
+    padding: 20px;
+    max-width: 700px;
+    margin: 50px auto;
+  }
+  
+  .thank-you-icon {
+    font-size: 100px;
+    color: green;
+    margin-bottom: 20px;
+    height: auto;
+    width: auto;
+    padding: 30px 0px;
+    background-color: rgb(244 249 255); /*rgb(244 245 255 / 93%);*/
+    margin: -20px -20px 38px -20px;
+  }
+
+  .thank-you-message p {
+    font-size: 1.1rem;
+    color: #2b2c2e;
+    padding: 30px 0;
+  }
+
   @media (max-width: 960px) {
     .contact-wrapper {
       grid-template-columns: 1fr;

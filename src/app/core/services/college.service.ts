@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { College, CollegeSearchParams } from '../models/college.model';
-import { HttpClient } from '@angular/common/http';
-import { delay, map, Observable, of } from 'rxjs';
+import { College, CollegesByCategoryResponse, CollegeSearchParams } from '../models/college.model';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { BehaviorSubject, catchError, delay, map, Observable, of, Subject, tap, throwError } from 'rxjs';
+import { ApiUrlBuilder } from '../../shared/utility/api-url-builder';
+import { CollegeModel, CollegeSearchResponse, Country, District, State } from '../models/search-response.model';
+import { RecentCollege } from '../models/recent-college.model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +12,11 @@ import { delay, map, Observable, of } from 'rxjs';
 
 export class CollegeService {
   private apiUrl = 'https://api.example.com/colleges'; // Replace with actual API endpoint
+  
+  private recentCollegesSubject = new BehaviorSubject<College[]>([]);
+  recentColleges$ = this.recentCollegesSubject.asObservable();
+  private destroy$ = new Subject<void>();
+
   
   // Mock data for development until the API is available
   private mockColleges: College[] = [
@@ -188,30 +196,114 @@ export class CollegeService {
     }
   ];
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient, 
+    private apiUrlBuilder: ApiUrlBuilder
+  ) { }
 
-  getColleges(params?: CollegeSearchParams): Observable<College[]> {
-    // When API is available, use this code:
-    // let httpParams = new HttpParams();
-    // if (params) {
-    //   Object.entries(params).forEach(([key, value]) => {
-    //     if (value !== undefined) {
-    //       httpParams = httpParams.set(key, value.toString());
-    //     }
-    //   });
-    // }
-    // return this.http.get<College[]>(this.apiUrl, { params: httpParams });
-    
+  getCollegesMock(params?: CollegeSearchParams): Observable<College[]> {
     // For now, use mock data
     return this.getMockColleges(params);
   }
 
-  getCollegeById(id: number): Observable<College | undefined> {
+  getCollegesV1(params?: CollegeSearchParams): Observable<College[]> {
+    // When API is available, use this code:
+    const endpoint = this.apiUrlBuilder.buildApiUrl(`search/colleges`);
+    let httpParams = new HttpParams();
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+          httpParams = httpParams.set(key, value.toString());
+        }
+      });
+    }
+    return this.http.get<College[]>(endpoint, { params: httpParams });
+    
+    // For now, use mock data
+    //return this.getMockColleges(params);
+  }
+
+  getColleges(params?: CollegeSearchParams): Observable<CollegeSearchResponse<CollegeModel>>  {
+    // When API is available, use this code:
+    const endpoint = this.apiUrlBuilder.buildApiUrl(`search/colleges`);
+    let httpParams = new HttpParams();
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+          httpParams = httpParams.set(key, value.toString());
+        }
+      });
+    }
+    return this.http.get<CollegeSearchResponse<CollegeModel>>(endpoint, { params: httpParams });
+    
+    // For now, use mock data
+    //return this.getMockColleges(params);
+  }
+
+
+  searchColleges(params?: CollegeSearchParams): Observable<CollegeSearchResponse<CollegeModel>> {
+    // When API is available, use this code:
+    const endpoint = this.apiUrlBuilder.buildApiUrl(`search/colleges`);
+    let httpParams = new HttpParams();
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+          httpParams = httpParams.set(key, value.toString());
+        }
+      });
+    }
+    return this.http.get<CollegeSearchResponse<CollegeModel>>(endpoint, { params: httpParams });
+    
+    // For now, use mock data
+    //return this.getMockColleges(params);
+  }
+
+  searchCollegex(params?: CollegeSearchParams): Observable<CollegeSearchResponse<CollegeModel>> {
+    // When API is available, use this code:
+    const endpoint = this.apiUrlBuilder.buildApiUrl(`search/collegex`);
+    let httpParams = new HttpParams();
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+          httpParams = httpParams.set(key, value.toString());
+        }
+      });
+    }
+    return this.http.get<CollegeSearchResponse<CollegeModel>>(endpoint, { params: httpParams }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Service error:', error);
+        return throwError(() => new Error(error.message));
+      })
+    );
+    // For now, use mock data
+    //return this.getMockColleges(params);
+  }
+
+  getCollegesByCategorySections(categorySectionIds: string[]): Observable<CollegesByCategoryResponse> {
+    // Create HTTP params
+    let params = new HttpParams();
+    const endpoint = this.apiUrlBuilder.buildApiUrl(`colleges/by-category`);
+    if (categorySectionIds && categorySectionIds.length) {
+      // Join array into comma-separated string for the API
+      params = params.set('category_section_ids', categorySectionIds.join(','));
+    }
+
+    return this.http.get<CollegesByCategoryResponse>(`${endpoint}`,  { params });
+  }
+
+  getCollegeByIdV1(id: number): Observable<College | undefined> {
     // When API is available, use this code:
     // return this.http.get<College>(`${this.apiUrl}/${id}`);
     
     // For now, use mock data
     return of(this.mockColleges.find(college => college.id === id)).pipe(delay(300));
+  }
+  getCollegeById(id: string): Observable<CollegeModel | undefined> {
+    // When API is available, use this code:
+    const endpoint = this.apiUrlBuilder.buildApiUrl(`colleges/${id}`);
+    return this.http.get<CollegeModel>(endpoint);
+    
+    
   }
 
   createCollege(college: Omit<College, 'id'>): Observable<College> {
@@ -225,24 +317,89 @@ export class CollegeService {
     }).pipe(delay(500));
   }
 
-  updateCollege(id: number, college: Partial<College>): Observable<College> {
+  updateCollege(id: string, college: Partial<CollegeModel>): Observable<CollegeModel> {
     // When API is available, use this code:
-    // return this.http.put<College>(`${this.apiUrl}/${id}`, college);
+    const endpoint = this.apiUrlBuilder.buildApiUrl(`colleges/${id}`);
+    return this.http.put<CollegeModel>(endpoint, college);
     
     // For now, use mock data
-    return of({
-      ...this.mockColleges.find(c => c.id === id)!,
-      ...college,
-      id
-    }).pipe(delay(500));
+    // return of({
+    //   ...this.mockColleges.find(c => c.id === id)!,
+    //   ...college,
+    //   id
+    // }).pipe(delay(500));
   }
 
-  deleteCollege(id: number): Observable<void> {
+  deleteCollege(id: string): Observable<void> {
     // When API is available, use this code:
     // return this.http.delete<void>(`${this.apiUrl}/${id}`);
     
     // For now, use mock data
     return of(void 0).pipe(delay(500));
+  }
+
+
+  saveRecentCollege(userId: string, createRecentCollegeDto: RecentCollege): Observable<any> {
+
+    const endpoint = this.apiUrlBuilder.buildApiUrl(`recent-colleges`);
+    return this.http.post(`${endpoint}`, { userId, ...createRecentCollegeDto }).pipe(
+      tap(response => {
+        console.log('Recent college saved:', response);
+        const updated = this.recentCollegesSubject.value;
+        this.recentCollegesSubject.next(updated);
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  getRecentColleges(userId: string, limit: number, page: number): Observable<any> {
+    const endpoint = this.apiUrlBuilder.buildApiUrl(`recent-colleges`);
+    return this.http.get(`${endpoint}`, { params: { userId, limit, page } }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getSuggestions(userId: string, limit: number): Observable<any> {
+    const endpoint = this.apiUrlBuilder.buildApiUrl(`recent-colleges/suggestions`);
+    return this.http.get(`${endpoint}/suggestions`, { params: { userId, limit } }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+
+  // Get all courses
+  getStates(): Observable<State[]> {
+    const apiUrl = this.apiUrlBuilder.buildApiUrl('colleges/states');
+    return this.http.get<State[]>(apiUrl);
+  }
+
+  // Get all courses
+  getDistricts(): Observable<District[]> {
+    const apiUrl = this.apiUrlBuilder.buildApiUrl('colleges/districts');
+    return this.http.get<District[]>(apiUrl);
+  }
+
+    // Get all courses
+  getCountries(): Observable<Country[]> {
+    const apiUrl = this.apiUrlBuilder.buildApiUrl('colleges/countries');
+    return this.http.get<Country[]>(apiUrl);
+  }
+
+
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = 'Unknown error occurred';
+    if (error.error instanceof ErrorEvent) {
+      // Client-side error
+      errorMessage = `Error: ${error.error.message}`;
+    } else if (error.error instanceof Object) {
+      // Server-side error
+      errorMessage = error.error.message || 'An error occurred';
+    } else {
+      // Other errors
+      errorMessage = `Error Code: ${error.status},  Message: ${error.message}`;
+    }
+    console.error(errorMessage);
+    return throwError(() => new Error(errorMessage));
   }
 
   private getMockColleges(params?: CollegeSearchParams): Observable<College[]> {
@@ -253,7 +410,7 @@ export class CollegeService {
         return colleges.filter(college => {
           let matches = true;
           
-          if (params.name && !college.name.toLowerCase().includes(params.name.toLowerCase())) {
+          if (params.keyword && !college.name.toLowerCase().includes(params.keyword.toLowerCase())) {
             matches = false;
           }
           

@@ -1,0 +1,78 @@
+  <div class="login-container">
+    
+    <mat-card *ngIf="!showVerification">
+      <mat-card-header>
+        <mat-card-title>Register</mat-card-title>
+      </mat-card-header>
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+  
+      <mat-card-content>
+        <div *ngIf="loading" class="loading-spinner">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
+        <ng-container *ngIf="!loading">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="fill">
+              <mat-label>First Name</mat-label>
+              <input matInput type="name" formControlName="first_name">
+              <mat-error *ngIf="registerForm.get('first_name')?.hasError('required')">
+                First Name is required
+              </mat-error>
+              <mat-error *ngIf="registerForm.get('first_name')?.hasError('first_name')">
+                Please enter a valid First Name
+              </mat-error>
+            </mat-form-field>
+            
+            <mat-form-field appearance="fill">
+              <mat-label>Last Name</mat-label>
+              <input matInput type="name" formControlName="last_name">
+              <mat-error *ngIf="registerForm.get('last_name')?.hasError('required')">
+                Last Name is required
+              </mat-error>
+              <mat-error *ngIf="registerForm.get('last_name')?.hasError('last_name')">
+                Please enter a valid Last Name
+              </mat-error>
+            </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email">
+            <mat-error *ngIf="registerForm.get('email')?.hasError('required')">
+              Email is required
+            </mat-error>
+            <mat-error *ngIf="registerForm.get('email')?.hasError('email')">
+              Please enter a valid email
+            </mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password">
+            <mat-error *ngIf="registerForm.get('password')?.hasError('required')">
+              Password is required
+            </mat-error>
+            <mat-error *ngIf="registerForm.get('password')?.hasError('minlength')">
+              Password must be at least 10 characters long
+            </mat-error>
+          </mat-form-field>
+  
+          <button mat-raised-button color="primary" type="submit" [disabled]="!registerForm.valid">
+            Submit
+          </button>
+        </form>
+        </ng-container>
+      </mat-card-content>
+      <mat-card-actions>
+        <a *ngIf="!loading" mat-button routerLink="/auth/login">Already have an account? Login</a>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- Email Verification -->
+    <app-email-verification
+      *ngIf="showVerification"
+      [email]="registeredEmail"
+      (verified)="onVerified()">
+    </app-email-verification>
+  </div>

@@ -1,0 +1,32 @@
+<form [formGroup]="otcForm">
+    <div class="otc-form">
+      <mat-form-field appearance="outline">
+        <mat-label>Mobile Number</mat-label>
+        <input matInput formControlName="mobile" placeholder="+1234567890">
+        <mat-icon matSuffix>phone</mat-icon>
+        <mat-error *ngIf="otcForm.get('mobile')?.hasError('pattern')">
+          Please enter a valid mobile number
+        </mat-error>
+      </mat-form-field>
+  
+      <button type="button" mat-stroked-button color="primary" 
+              (click)="onSendOtc()"
+              [disabled]="!otcForm.get('mobile')?.valid">
+        Send Code
+      </button>
+    </div>
+  
+    <mat-form-field appearance="outline" *ngIf="codeSent">
+      <mat-label>One-Time Code</mat-label>
+      <input matInput formControlName="code" placeholder="Enter 6-digit code">
+      <mat-error *ngIf="otcForm.get('code')?.hasError('pattern')">
+        Please enter a valid 6-digit code
+      </mat-error>
+    </mat-form-field>
+  
+    <button *ngIf="codeSent" mat-raised-button color="primary" 
+            (click)="onVerifyOtc()"
+            [disabled]="!otcForm.valid">
+      Verify & Login
+    </button>
+  </form>

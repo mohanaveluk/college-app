@@ -2,9 +2,17 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
     {
-        path: '',
-        loadComponent: () => import('./features/home/home.component').then(m => m.HomeComponent)
+        path: 'auth',
+        loadChildren: () => import('./auth/auth.routes').then(m => m.authRoutes)
     },
+    {
+        path: '',
+        loadComponent: () => import('./features/home3/home3.component').then(m => m.Home3Component)
+    },
+    // {
+    //     path: '',
+    //     loadComponent: () => import('./features/home/home.component').then(m => m.HomeComponent)
+    // },
     {
         path: 'home2',
         loadComponent: () => import('./features/home2/home2.component').then(m => m.Home2Component)
@@ -14,8 +22,12 @@ export const routes: Routes = [
         loadComponent: () => import('./features/home3/home3.component').then(m => m.Home3Component)
     },
     {
-        path: 'colleges',
+        path: 'collegesv1',
         loadComponent: () => import('./features/college-list/college-list.component').then(m => m.CollegeListComponent)
+    },
+    {
+        path: 'colleges',
+        loadComponent: () => import('./features/college-search/college-search.component').then(m => m.CollegeSearchComponent)
     },
     {
         path: 'colleges/:id',

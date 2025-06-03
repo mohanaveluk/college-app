@@ -4,6 +4,7 @@ import { College } from '../../core/models/college.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CollegeService } from '../../core/services/college.service';
 import { Location } from '@angular/common';
+import { CollegeModel } from '../../core/models/search-response.model';
 
 @Component({
   selector: 'app-college-details',
@@ -15,7 +16,7 @@ import { Location } from '@angular/common';
   styleUrl: './college-details.component.scss'
 })
 export class CollegeDetailsComponent implements OnInit {
-  college: College | undefined;
+  college: CollegeModel | undefined;
   
   constructor(
     private route: ActivatedRoute,
@@ -28,12 +29,12 @@ export class CollegeDetailsComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const collegeId = params.get('id');
       if (collegeId) {
-        this.loadCollege(parseInt(collegeId, 10));
+        this.loadCollege(collegeId);
       }
     });
   }
   
-  loadCollege(id: number): void {
+  loadCollege(id: string): void {
     this.collegeService.getCollegeById(id).subscribe(college => {
       if (college) {
         this.college = college;

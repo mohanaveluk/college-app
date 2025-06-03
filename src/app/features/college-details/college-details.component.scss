@@ -188,6 +188,10 @@
     width: 48px;
     margin-bottom: 16px;
   }
+
+  .back-button mat-icon {
+    color: #ffffff;
+  }
   
   @media (max-width: 600px) {
     .actions-wrapper {

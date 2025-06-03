@@ -1,0 +1,43 @@
+<div class="verification-container">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Email Verification</mat-card-title>
+        <mat-card-subtitle>Please enter the verification code sent to your email {{email}}</mat-card-subtitle>
+      </mat-card-header>
+  
+      <mat-card-content>
+        <form [formGroup]="verificationForm" (ngSubmit)="onSubmit()">
+          <div class="code-input">
+            <mat-form-field appearance="fill">
+              <mat-label>Verification Code</mat-label>
+              <input matInput formControlName="code" placeholder="Enter 6-digit code">
+              <mat-error *ngIf="verificationForm.get('code')?.hasError('required')">
+                Verification code is required
+              </mat-error>
+              <mat-error *ngIf="verificationForm.get('code')?.hasError('pattern')">
+                Please enter a valid 6-digit code
+              </mat-error>
+            </mat-form-field>
+          </div>
+  
+          <div class="form-actions">
+            <button mat-raised-button color="primary" type="submit" 
+                    [disabled]="!verificationForm.valid || verifying">
+              <mat-spinner diameter="20" *ngIf="verifying"></mat-spinner>
+              <span *ngIf="!verifying">Verify Email</span>
+            </button>
+          </div>
+  
+          <div class="additional-actions">
+            <button mat-button type="button" (click)="resendCode()">
+              Didn't receive code? Resend
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+    <app-loading-spinner 
+        [show]="loading" 
+        [message]="loadingMessage">
+    </app-loading-spinner>
+  </div>
