@@ -1,0 +1,28 @@
+<div class="search-container-s">
+    <form (ngSubmit)="onSubmit()" [formGroup]="searchForm" class="search-box">
+        <div class="search-box-s">
+            <mat-form-field appearance="fill" class="category-select-s">
+                <mat-select [(value)]="selectedCategory" formControlName="cs" placeholder="All">
+                    <mat-option *ngFor="let category of categories" [value]="category">
+                        {{ category }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="search-input-s">
+                <mat-label>Search by college name, city, or course</mat-label>
+                <input matInput type="text" formControlName="k" #searchInput>
+                <button *ngIf="searchForm.get('k')?.value" mat-icon-button matSuffix type="button" aria-label="Clear search"
+                    (click)="clearSearch()" class="clear-button">
+                    <mat-icon>close</mat-icon>
+                </button>
+                <button type="submit" mat-icon-button matSuffix aria-label="Search">
+                    <mat-icon>search</mat-icon>
+                </button>
+            </mat-form-field>
+            <div class="search-buttons">
+                <!-- <button mat-raised-button color="primary" (click)="search()">Search</button> -->
+                <!-- <button mat-stroked-button color="accent" [routerLink]="['/colleges']">Advanced</button> -->
+            </div>
+        </div>
+    </form>
+</div>

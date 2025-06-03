@@ -2,6 +2,10 @@
     min-height: calc(100vh - 64px - 200px);
   }
   
+  .container {
+    max-width: 1400px;
+  }
+
   .admin-actions {
     display: flex;
     justify-content: space-between;
@@ -37,6 +41,14 @@
     color: rgba(0, 0, 0, 0.5);
   }
   
+  .mat-accent, .mat-accent mat-icon {
+    color: #ff4081; /* Pink accent in indigo-pink theme */
+  }
+
+  .mat-warn, .mat-warn mat-icon {
+    color: #f44336; /* Pink accent in indigo-pink theme */
+  }
+
   @media (max-width: 768px) {
     .admin-actions {
       flex-direction: column;

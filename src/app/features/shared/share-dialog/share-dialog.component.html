@@ -1,0 +1,27 @@
+<div class="dialog-content">
+    <div class="product-info">
+      <h2>Refer A Friend</h2>
+      <p>&nbsp;</p>
+      <h3>{{ college.name }}</h3>
+      <img [src]="college.image_url! | imageFallback:'images/college/greyed.jpg'" [alt]="college.name + ' image'" class="college-card-image" style="width: 100%;">
+      <p><strong>Category:</strong> {{ college.category | titlecase }}</p>
+      <p><strong>Location:</strong> {{ college.city }}, {{ college.state.name! }} </p>
+    </div>
+    <form [formGroup]="shareForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" required>
+        <mat-error *ngIf="shareForm.get('email')?.invalid">Please enter a valid email address</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Notes</mat-label>
+        <textarea matInput formControlName="notes"></textarea>
+      </mat-form-field>
+  
+      <div class="button-container">
+        <button mat-raised-button color="primary" type="submit" [disabled]="shareForm.invalid">Share</button>
+        <button mat-button (click)="onCancel()">Cancel</button>
+      </div>
+    </form>
+  </div>

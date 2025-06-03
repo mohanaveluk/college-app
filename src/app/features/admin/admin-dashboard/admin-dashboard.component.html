@@ -45,10 +45,10 @@
           <div class="table-container">
             <table mat-table [dataSource]="colleges" matSort (matSortChange)="sortData($event)">
               <!-- ID Column -->
-              <ng-container matColumnDef="id">
+              <!-- <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
                 <td mat-cell *matCellDef="let college"> {{ college.id }} </td>
-              </ng-container>
+              </ng-container> -->
               
               <!-- Name Column -->
               <ng-container matColumnDef="name">
@@ -65,7 +65,7 @@
               <!-- State Column -->
               <ng-container matColumnDef="state">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> State </th>
-                <td mat-cell *matCellDef="let college"> {{ college.state }} </td>
+                <td mat-cell *matCellDef="let college"> {{ college.state.name }} </td>
               </ng-container>
               
               <!-- Category Column -->

@@ -3,7 +3,7 @@ import { SharedCommonModule, SharedMaterialModule } from '../../shared/modules';
 import { CollegeCardComponent } from '../shared/college-card/college-card.component';
 import { CategorySection } from '../../core/models/college.model';
 import { CollegeService } from '../../core/services/college.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -22,6 +22,7 @@ export class Home2Component implements OnInit {
   
   constructor(
     private collegeService: CollegeService,
+    private route: ActivatedRoute,
     private router: Router
   ) {}
   
@@ -32,42 +33,49 @@ export class Home2Component implements OnInit {
   initializeCategorySections(): void {
     const sections: CategorySection[] = [
       {
+        id: '1',
         title: 'Engineering Colleges',
         description: 'Top engineering institutions offering cutting-edge technical education',
         icon: 'engineering',
         colleges: []
       },
       {
+        id: '2',
         title: 'Medical Colleges',
         description: 'Leading medical schools for aspiring healthcare professionals',
         icon: 'local_hospital',
         colleges: []
       },
       {
+        id: '3',
         title: 'Arts & Humanities',
         description: 'Prestigious institutions for liberal arts and humanities education',
         icon: 'palette',
         colleges: []
       },
       {
+        id: '4',
         title: 'Science Colleges',
         description: 'Research-focused institutions for natural and applied sciences',
         icon: 'science',
         colleges: []
       },
       {
+        id: '5',
         title: 'Law Colleges',
         description: 'Premier law schools for legal education and justice studies',
         icon: 'gavel',
         colleges: []
       },
       {
+        id: '6',
         title: 'Business Schools',
         description: 'Top-rated institutions for management and business education',
         icon: 'business',
         colleges: []
       },
       {
+        id: '7',
         title: 'Pharmacy Colleges',
         description: 'Leading institutions for pharmaceutical studies and research',
         icon: 'medication',
@@ -77,7 +85,7 @@ export class Home2Component implements OnInit {
 
     // Load colleges for each section
     sections.forEach(section => {
-      this.collegeService.getColleges().subscribe(colleges => {
+      this.collegeService.getCollegesV1().subscribe(colleges => {
         section.colleges = colleges;
       });
     });

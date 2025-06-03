@@ -1,0 +1,175 @@
+.college-card {
+    
+    height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+  }
+  
+  .card-image-container {
+    position: relative;
+  }
+  
+  .college-card-image {
+    cursor: pointer;
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+  }
+  
+  .card-overlay {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+  }
+  
+  .card-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 160px);
+  }
+  
+  .card-content-wrapper mat-card-header {
+    cursor: pointer;
+  }
+
+  .list-view {
+    display: block;
+    margin-bottom: 16px;
+  
+    .card-content-wrapper {
+      height: auto;
+    }
+  }
+  
+  .list-view-layout {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .list-image-container {
+    position: relative;
+    flex: 0 0 200px;
+  }
+  
+  .list-image {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  .list-content {
+    flex: 1;
+  }
+  
+  .college-card-content {
+    flex-grow: 1;
+    padding-top: 8px;
+  }
+  
+  .rating-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .rating {
+    display: flex;
+    align-items: center;
+    color: #f57c00;
+  
+    mat-icon {
+      font-size: 18px;
+      height: 18px;
+      width: 18px;
+      margin-right: 4px;
+    }
+  }
+  
+  .established {
+    font-size: 0.85rem;
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  .description {
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, 0.7);
+  }
+  
+  .courses-wrapper {
+    margin-top: 8px;
+  }
+  
+  .courses-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+    display: block;
+  }
+  
+  .courses mat-chip {
+    font-size: 0.8rem;
+    min-height: 24px;
+  }
+  
+  .spacer {
+    flex: 1;
+  }
+  
+  // Responsive styles
+  @media (max-width: 1200px) {
+    .college-card {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+  }
+  
+  @media (max-width: 960px) {
+    .list-view-layout {
+      flex-direction: column;
+    }
+  
+    .list-image-container {
+      flex: none;
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .college-card {
+      width: 100%;
+    }
+  
+    .card-content-wrapper {
+      height: auto;
+    }
+  
+    .list-view-layout {
+      gap: 8px;
+    }
+  
+    .courses mat-chip-listbox {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+  
+    mat-card-actions {
+      flex-wrap: wrap;
+      gap: 8px;
+      
+      button {
+        flex: 1;
+        min-width: auto;
+      }
+    }
+    .mat-mdc-icon-button {
+        max-width: 50px;
+    }
+  }

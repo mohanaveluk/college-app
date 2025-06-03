@@ -1,0 +1,42 @@
+mat-card {
+    padding: 24px;
+}
+
+.verification-container {
+    max-width: 450px;
+    margin: 24px auto;
+    padding: 0 16px;
+  }
+  
+  
+  .mat-mdc-card-header {
+    display: flex;
+    padding: 16px 16px;
+  }
+
+  .code-input {
+    margin: 24px 0;
+    
+    mat-form-field {
+      width: 100%;
+    }
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: center;
+    margin: 24px 0;
+  
+    button {
+      min-width: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+  }
+  
+  .additional-actions {
+    text-align: center;
+    margin-top: 16px;
+  }

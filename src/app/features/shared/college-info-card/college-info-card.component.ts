@@ -3,6 +3,7 @@ import { College } from '../../../core/models/college.model';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { SharedCommonModule, SharedMaterialModule } from '../../../shared/modules';
+import { CollegeModel } from '../../../core/models/search-response.model';
 
 @Component({
   selector: 'app-college-info-card',

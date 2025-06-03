@@ -1,0 +1,54 @@
+.dialog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 100%;
+
+    padding: 16px;
+}
+
+.product-info {
+    margin-bottom: 16px;
+}
+
+.product-info h3 {
+    margin-bottom: 8px;
+}
+
+.product-info img {
+    max-width: 100%;
+    height: 225px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+::ng-deep .mat-dialog-container {
+    position: fixed !important;
+    right: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 300px !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: -4px 0 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+  
+  ::ng-deep .mat-dialog-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+  }

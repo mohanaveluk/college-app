@@ -44,8 +44,8 @@
           </div>
         </div>
       </div>
-      
-      <div class="contact-form-container">
+
+      <div class="contact-form-container" *ngIf="!isSubmitted">
         <mat-card>
           <mat-card-header>
             <mat-card-title>Send Us a Message</mat-card-title>
@@ -73,6 +73,14 @@
               </mat-form-field>
               
               <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Phone</mat-label>
+                <input matInput formControlName="phone" maxlength="15" minlength="10">
+                <mat-error *ngIf="contactForm.get('phone')?.hasError('invalidPhone')">
+                  Invalid phone number. Use digits only, with optional "+" at the start.
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" class="full-width">
                 <mat-label>Subject</mat-label>
                 <mat-select formControlName="subject" required>
                   <mat-option value="general">General Inquiry</mat-option>
@@ -98,15 +106,28 @@
                   type="submit" 
                   mat-raised-button 
                   color="primary" 
-                  [disabled]="contactForm.invalid"
+                  [disabled]="contactForm.invalid || isSubmitting"
                 >
-                  Send Message
+                {{ isSubmitting ? 'Sending Message...' : 'Send Message' }}
                   <mat-icon>send</mat-icon>
                 </button>
               </div>
             </form>
           </mat-card-content>
         </mat-card>
+        <app-loading-spinner [show]="loading" [message]="loadingMessage"></app-loading-spinner>
       </div>
+      
+      <div *ngIf="isSubmitted">
+        <mat-card class="thank-you-message">
+          <mat-icon class="thank-you-icon">check_circle</mat-icon>
+
+          <h2>Thank you for contacting us!</h2>
+          
+          <p>We have received your message and will get back to you shortly.</p>
+
+        </mat-card>
+      </div>
+      
     </div>
   </div>

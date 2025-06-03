@@ -1,0 +1,102 @@
+.search-container-s {
+    padding: 24px 24px 0 24px;
+    background: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  .search-box-s {
+    display: flex;
+    align-items: center;
+    //gap: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+
+
+    /* Normal state */
+    .mat-form-field-flex, .mat-mdc-form-field, .mat-mdc-form-field-flex {
+      background-color: white !important;
+    }
+    
+    /* Hover state */
+    &:hover .mat-form-field-flex {
+      background-color: white !important;
+    }
+    
+    /* Focused state */
+    &.mat-focused .mat-form-field-flex {
+      background-color: white !important;
+    }
+  }
+  
+  ::ng-deep .search-box-s .mat-mdc-text-field-wrapper mat-icon{
+    color: #757575;
+    cursor: pointer;
+  }
+
+  ::ng-deep .search-box-s .category-select-s .mat-mdc-text-field-wrapper {
+    background-color: #d2d2d2;
+    color: white;
+    border-radius: 4px 0px 0px 4px;
+  }
+
+  ::ng-deep .search-box-s .mat-mdc-text-field-wrapper {
+    border-radius: 0px 4px 4px 0px;
+  }
+
+  ::ng-deep .search-box-s .mat-mdc-text-field-wrapper .mdc-text-field--focused, .mdc-text-field--focused, .mat-focused{
+    background-color: #f7f7f7 !important;
+  }
+
+  ::ng-deep .category-select-s .mat-mdc-text-field-wrapper .mat-mdc-select-placeholder {
+    color: rgb(0, 0, 0);
+  }
+
+  .category-select-s {
+    background-color: white;
+    margin-bottom: 0;
+    border-radius: 0px;
+    
+  }
+
+  .search-input-s {
+    background-color: white;
+    flex: 1;
+    margin-bottom: 0;
+    border-radius: 0px;
+  }
+  
+  .search-buttons {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  /* Clear button styles */
+.clear-button {
+    margin-right: -8px; /* Reduce space between clear and search buttons */
+    transform: scale(0.8);
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .search-box-s {
+      flex-direction: column;
+    }
+    
+    .category-select-s, .search-input-s {
+      width: 100%;
+    }
+  }
+  
+  /* Make sure icons don't overlap */
+  .mat-form-field-suffix {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }

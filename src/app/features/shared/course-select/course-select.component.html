@@ -1,0 +1,19 @@
+<mat-form-field appearance="fill" class="w-100">
+  <mat-label>Select Courses</mat-label>
+  <mat-select [formControl]="courseControl" multiple 
+              (selectionChange)="onSelectionChange($event)"
+              [compareWith]="compareCourses">
+    <mat-option>
+      <ngx-mat-select-search 
+        [formControl]="searchControl"
+        placeholderLabel="Search courses..."
+        noEntriesFoundLabel="No courses found">
+      </ngx-mat-select-search>
+    </mat-option>
+    
+    <mat-option *ngFor="let course of filteredCourses | async" 
+                [value]="course">
+      {{course.code}} - {{course.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

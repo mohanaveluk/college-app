@@ -1,0 +1,78 @@
+  <div class="login-container">
+    <mat-card  *ngIf="!showVerification">
+      <mat-card-header>
+        <mat-card-title>Login</mat-card-title>
+      </mat-card-header>
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+      <mat-card-content>
+        <!--<app-social-login (socialLogin)="onSocialLogin($event)"></app-social-login>
+
+        <div class="divider">
+          <span>or</span>
+        </div>-->
+        <div *ngIf="loading" class="loading-spinner">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
+
+        <div [ngSwitch]="showOtcLogin" *ngIf="!loading">
+        
+          <form *ngSwitchCase="false" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="fill">
+              <mat-label>Email</mat-label>
+              <input matInput type="email" formControlName="email">
+              <mat-icon matSuffix>email</mat-icon>
+              <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+                Email is required
+              </mat-error>
+              <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
+                Please enter a valid email
+              </mat-error>
+            </mat-form-field>
+        
+            <mat-form-field appearance="fill">
+              <mat-label>Password</mat-label>
+              <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+              <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+                <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+                Password is required
+              </mat-error>
+            </mat-form-field>
+        
+            <div class="form-actions">
+              <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">
+                Login
+              </button>
+              <a mat-button routerLink="/auth/request-reset">Forgot Password?</a>
+            </div>
+        
+          </form>
+        
+          <app-otc-login *ngSwitchCase="true" 
+                          (sendOtc)="onSendOtc($event)" 
+                          (verifyOtc)="onVerifyOtc($event)">
+          </app-otc-login>
+        </div>
+
+        <!-- <button mat-button color="primary" (click)="toggleOtcLogin()">
+          {{ showOtcLogin ? 'Login with Email' : 'Login with Mobile' }}
+        </button> -->
+      </mat-card-content>
+      <div class="divider" *ngIf="!loading">
+        <span>or</span>
+      </div>
+      <mat-card-actions>
+        <a *ngIf="!loading" mat-button routerLink="/auth/register">Don't have an account? Register</a>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- Email Verification -->
+    <app-email-verification
+      *ngIf="showVerification"
+      [email]="unverifiedEmail"
+      (verified)="onVerified()">
+    </app-email-verification>    
+  </div>

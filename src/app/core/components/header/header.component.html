@@ -1,16 +1,34 @@
 <mat-toolbar color="primary">
     <button mat-icon-button [routerLink]="['/']">
-      <mat-icon>school</mat-icon>
+      <mat-icon class="logo-icon">school</mat-icon>
     </button>
     <span [routerLink]="['/']" class="app-title">College Finder</span>
     
-    <span class="spacer"></span>
+
     
+    <!--<div class="search-bar">
+      <mat-form-field appearance="fill">
+        <mat-label>Search Colleges</mat-label>
+        <input matInput [(ngModel)]="searchTerm" (keyup.enter)="search()" />
+        <mat-icon matSuffix  (click)="search()">search</mat-icon>
+      </mat-form-field>
+    </div>-->
+
+    <!-- <div class="search-container">
+      <mat-form-field appearance="fill">
+        <input matInput [(ngModel)]="searchQuery" placeholder="Search colleges..." (keyup.enter)="onSearch()">
+        <mat-icon matSuffix (click)="onSearch()">search</mat-icon>
+      </mat-form-field>
+    </div> -->
+    
+    <span class="spacer"></span>
+
     <div class="desktop-menu">
       <a mat-button [routerLink]="['/colleges']">Colleges</a>
       <a mat-button [routerLink]="['/about']">About</a>
       <a mat-button [routerLink]="['/contact']">Contact</a>
       <a mat-button [routerLink]="['/admin']">Admin</a>
+      <a mat-button routerLink="/auth/login" *ngIf="!isLoggedIn">Login</a>
     </div>
     
     <button mat-icon-button [matMenuTriggerFor]="menu" class="mobile-menu-button">
@@ -22,5 +40,46 @@
       <a mat-menu-item [routerLink]="['/about']">About</a>
       <a mat-menu-item [routerLink]="['/contact']">Contact</a>
       <a mat-menu-item [routerLink]="['/admin']">Admin</a>
+      <a mat-button routerLink="/auth/login" *ngIf="!isLoggedIn">Login</a>
+      <!-- <button mat-menu-item *ngIf="isLoggedIn" (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Logout</span>
+      </button>
+      <button mat-menu-item *ngIf="isLoggedIn" routerLink="/auth/profile">
+        <mat-icon>account_circle</mat-icon>
+        <span>Profile</span>
+      </button> -->
     </mat-menu>
+    <!-- User Menu -->
+    <div *ngIf="isLoggedIn">
+      <button mat-button [matMenuTriggerFor]="userMenu">
+        <div class="user-avatar" *ngIf="!userAvatar">{{userInitials}}</div>
+        <img *ngIf="userAvatar" [src]="userAvatar" [alt]="userName" class="user-avatar-image">
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <!-- <div class="p-menu">Name: {{userName}}</div> -->
+        <div class="user-menu-header">
+          <div class="user-info">
+            <a routerLink="/auth/profile" class="user-name">{{userName}}</a>
+            <div class="user-email">{{userEmail}}</div>
+          </div>
+        </div>
+        <mat-divider></mat-divider>            
+       
+        <button mat-menu-item routerLink="/pricing/account">
+          <mat-icon>account_circle</mat-icon>
+          <span>My Account</span>
+        </button>
+        <button mat-menu-item routerLink="/pricing/payment-history">
+          <mat-icon>history</mat-icon>
+          <span>Payment History</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </div>
+    
   </mat-toolbar>
