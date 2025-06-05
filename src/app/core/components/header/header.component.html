@@ -27,7 +27,7 @@
       <a mat-button [routerLink]="['/colleges']">Colleges</a>
       <a mat-button [routerLink]="['/about']">About</a>
       <a mat-button [routerLink]="['/contact']">Contact</a>
-      <a mat-button [routerLink]="['/admin']">Admin</a>
+      <!-- <a mat-button [routerLink]="['/admin']">Admin</a> -->
       <a mat-button routerLink="/auth/login" *ngIf="!isLoggedIn">Login</a>
     </div>
     
@@ -39,7 +39,7 @@
       <a mat-menu-item [routerLink]="['/colleges']">Colleges</a>
       <a mat-menu-item [routerLink]="['/about']">About</a>
       <a mat-menu-item [routerLink]="['/contact']">Contact</a>
-      <a mat-menu-item [routerLink]="['/admin']">Admin</a>
+      <!-- <a mat-menu-item [routerLink]="['/admin']">Admin</a> -->
       <a mat-button routerLink="/auth/login" *ngIf="!isLoggedIn">Login</a>
       <!-- <button mat-menu-item *ngIf="isLoggedIn" (click)="logout()">
         <mat-icon>exit_to_app</mat-icon>
@@ -66,13 +66,13 @@
         </div>
         <mat-divider></mat-divider>            
        
-        <button mat-menu-item routerLink="/pricing/account">
+        <!-- <button mat-menu-item routerLink="/profile">
           <mat-icon>account_circle</mat-icon>
           <span>My Account</span>
-        </button>
-        <button mat-menu-item routerLink="/pricing/payment-history">
-          <mat-icon>history</mat-icon>
-          <span>Payment History</span>
+        </button> -->
+        <button mat-menu-item routerLink="/admin">
+          <mat-icon>group_work</mat-icon>
+          <span>Admin</span>
         </button>
         <mat-divider></mat-divider>
         <button mat-menu-item (click)="logout()">

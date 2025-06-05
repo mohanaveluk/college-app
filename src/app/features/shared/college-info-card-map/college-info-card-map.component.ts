@@ -3,7 +3,7 @@ import { College } from '../../../core/models/college.model';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { SharedCommonModule, SharedMaterialModule } from '../../../shared/modules';
-import { CollegeModel } from '../../../core/models/search-response.model';
+import { CollegeModel, RecentlyViewed } from '../../../core/models/search-response.model';
 import { TruncatePipe } from "../../../shared/utility/truncate.pipe";
 import { CapitalizePipe } from "../../../shared/utility/capitalize.pipe";
 import { ImageFallbackPipe } from "../../../shared/utility/image-fallback.pipe";
@@ -72,6 +72,13 @@ export class CollegeInfoCardMapComponent {
         notes: '',
         tags: ['visited', 'interested'] // Example tags
       };
+
+      const rv = localStorage.getItem('rv');
+      const rvObj: RecentlyViewed[] = JSON.parse(rv!);
+      const rIndex = rvObj && rvObj.findIndex(x => x.college_id === collegeId);
+      if(rIndex >= 0){
+        return;
+      }
 
       this.collegeService.saveRecentCollege('user-guid', recentCollegeDto).subscribe({
         next: (data) => {

@@ -156,6 +156,15 @@ button.mat-icon-button[color="accent"] {
   color: #ff4081 !important; /* Force pink accent */
 }
 
+.mat-raised-button.mat-primary .mat-icon {
+  color: white;
+}
+
+/* Add this below theme import */
+.pripamry-icon .mat-icon {
+  color: white;
+}
+
 /* Responsive adjustments */
 @media screen and (max-width: 959px) {
   .college-grid {

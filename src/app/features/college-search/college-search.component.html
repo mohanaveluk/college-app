@@ -77,5 +77,34 @@
           <mat-icon>expand_more</mat-icon>
         </button>
       </div>
+      <div class="pt-5">
+        <ng-container *ngIf="!isMobile">
+                <section *ngIf="categorySections && categorySections.colleges.length" class="category-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <mat-icon>{{ categorySections.categorySection.icon }}</mat-icon>
+                            <h2>{{ categorySections.categorySection.title }}</h2>
+                        </div>
+                        <p class="section-description">{{ categorySections.categorySection.description }}</p>
+                    </div>
+                
+                    <div class="scroll-container">
+                        <button mat-icon-button class="scroll-button left" (click)="scrollLeft(categorySections)" *ngIf="hasScrollLeft(categorySections)">
+                            <mat-icon>chevron_left</mat-icon>
+                        </button>
+                
+                        <div class="colleges-scroll" [id]="getSectionId(categorySections)" #collegesScroll>
+                            <app-college-info-card-map *ngFor="let college of categorySections.colleges" [college]="college"
+                                (click)="navigateToDetailsPage(college.id)" class="scroll-item"></app-college-info-card-map>
+                        </div>
+                
+                        <button mat-icon-button class="scroll-button right" (click)="scrollRight(categorySections)"
+                            *ngIf="hasScrollRight(categorySections)">
+                            <mat-icon>chevron_right</mat-icon>
+                        </button>
+                    </div>
+                </section>
+            </ng-container>
+      </div>
     </div>
   </div>
