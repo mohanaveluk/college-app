@@ -25,33 +25,36 @@
 </app-search-entity>
 
 <div class="container">
+  <app-loading-spinner [show]="loading" [message]="loadingMessage" *ngIf="loading"></app-loading-spinner>
     <!-- Desktop View -->
     <ng-container *ngIf="!isMobile">
-        <section *ngFor="let section of categorySections" class="category-section">
-            <div class="section-header">
-                <div class="section-title">
-                    <mat-icon>{{ section.categorySection.icon }}</mat-icon>
-                    <h2>{{ section.categorySection.title }}</h2>
-                </div>
-                <p class="section-description">{{ section.categorySection.description }}</p>
+      <ng-container *ngFor="let section of categorySections">
+        <section class="category-section" *ngIf="section.colleges.length">
+          <div class="section-header">
+            <div class="section-title">
+              <mat-icon>{{ section.categorySection.icon }}</mat-icon>
+              <h2>{{ section.categorySection.title }}</h2>
             </div>
-            
-            <div class="scroll-container">
-                <button mat-icon-button class="scroll-button left" (click)="scrollLeft(section)" *ngIf="hasScrollLeft(section)">
-                    <mat-icon>chevron_left</mat-icon>
-                </button>
-
-                <div class="colleges-scroll" [id]="getSectionId(section)" #collegesScroll>
-                    <app-college-info-card-map *ngFor="let college of section.colleges" [college]="college"
-                        (click)="navigateToDetailsPage(college.id)" class="scroll-item"></app-college-info-card-map>
-                </div>
-
-                <button mat-icon-button class="scroll-button right" (click)="scrollRight(section)" *ngIf="hasScrollRight(section)">
-                    <mat-icon>chevron_right</mat-icon>
-                </button>
+            <p class="section-description">{{ section.categorySection.description }}</p>
+          </div>
+      
+          <div class="scroll-container">
+            <button mat-icon-button class="scroll-button left" (click)="scrollLeft(section)" *ngIf="hasScrollLeft(section)">
+              <mat-icon>chevron_left</mat-icon>
+            </button>
+      
+            <div class="colleges-scroll" [id]="getSectionId(section)" #collegesScroll>
+              <app-college-info-card-map *ngFor="let college of section.colleges" [college]="college"
+                (click)="navigateToDetailsPage(college.id)" class="scroll-item"></app-college-info-card-map>
             </div>
+      
+            <button mat-icon-button class="scroll-button right" (click)="scrollRight(section)"
+              *ngIf="hasScrollRight(section)">
+              <mat-icon>chevron_right</mat-icon>
+            </button>
+          </div>
         </section>
-
+      </ng-container>
 
         <!-- <section class="category-section">
           <div class="section-header">

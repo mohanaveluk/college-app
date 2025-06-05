@@ -11,6 +11,7 @@ import { SearchEntityComponent } from "../shared/search-entity/search-entity.com
 import { CollegeModel, RecentlyViewed } from '../../core/models/search-response.model';
 import { Category, CategoryService } from '../../core/services/categoryService';
 import { AuthService } from '../../auth/auth.service';
+import { LoadingSpinnerComponent } from "../shared/components/loading-spinner/loading-spinner.component";
 
 @Component({
   selector: 'app-home3',
@@ -19,7 +20,8 @@ import { AuthService } from '../../auth/auth.service';
     SharedMaterialModule,
     //CollegeInfoCardComponent,
     CollegeInfoCardMapComponent,
-    SearchEntityComponent
+    SearchEntityComponent,
+    LoadingSpinnerComponent
 ],
   templateUrl: './home3.component.html',
   styleUrl: './home3.component.scss'
@@ -50,6 +52,7 @@ export class Home3Component implements OnInit , AfterViewInit {
   isInitialized = false; // Initialization flag
 
   loading = false;
+  loadingMessage = "Processing";
   error: string | null = null;
   selectedCategory: string | null = null;
   recentColleges: CollegeModel[] = [];
@@ -60,6 +63,7 @@ export class Home3Component implements OnInit , AfterViewInit {
 
 
   JSON: any;
+  
 
   constructor(
     private collegeService: CollegeService,
@@ -85,15 +89,16 @@ export class Home3Component implements OnInit , AfterViewInit {
     this.isInitialized = true;
     this.loadCategories();
 
+    this.authService.isUserLoggedIn().subscribe(isLoggedIn => {
+      this.isUserLoggedIn = isLoggedIn;
+    });
+    
     this.collegeService.recentColleges$.subscribe(colleges => {
       // Handle the updated list of recent colleges
       this.loadRecentColleges();
       console.log('Recently viewed colleges:', colleges);
     });
 
-    this.authService.isUserLoggedIn().subscribe(isLoggedIn => {
-      this.isUserLoggedIn = isLoggedIn;
-    });
 
   }
 
@@ -216,7 +221,7 @@ export class Home3Component implements OnInit , AfterViewInit {
           });
         });
 
-        this.categorySections = categorySections;
+        this.categorySections = categorySections.filter(s => s.colleges.length > 0) || [];
 
         this.loading = false;
       },
@@ -230,7 +235,7 @@ export class Home3Component implements OnInit , AfterViewInit {
 
   loadRecentColleges(): void {
     this.recentlyViewed = [];
-    this.recentSection.colleges = [];
+    //this.recentSection.colleges = [];
 
     if (!this.isUserLoggedIn) {
       return;
@@ -240,12 +245,13 @@ export class Home3Component implements OnInit , AfterViewInit {
     this.collegeService.getRecentColleges('user-guid', 10, 1).subscribe({
       next: (data) => {
         this.recentlyViewed  = data.data || [];
+        localStorage.setItem('rv', JSON.stringify(this.recentlyViewed));
         if (this.recentlyViewed.length > 0) {
           this.recentColleges = data.data || [];
           this.recentSection.colleges = this.recentlyViewed.map((college: any) => {
             return {
               ...college.college,
-              imageUrl: college.image_url || 'assets/images/college-placeholder.png' // Default image URL
+              imageUrl: college.image_url || 'images/college/greyed.jpg' // Default image URL
             };
           });
 
@@ -254,13 +260,17 @@ export class Home3Component implements OnInit , AfterViewInit {
             if (recentIndex !== -1) {
               this.categorySections[recentIndex].colleges = this.recentSection.colleges;
               this.categorySections[recentIndex].showScrollButtons = this.recentSection.showScrollButtons;
+              this.categorySections[recentIndex].colleges;
+              this.cdr.detectChanges();
+              setTimeout(() => this.checkScrollButtonsVisibility(), 0); // Check scroll buttons visibility after loading colleges
             }
             else{
               this.categorySections.push(this.recentSection);
+              this.cdr.detectChanges();
+              setTimeout(() => this.checkScrollButtonsVisibility(), 0); // Check scroll buttons visibility after loading colleges
             }
           }
           
-          this.checkScrollButtonsVisibility(); // Check scroll buttons visibility after loading colleges
         }
         this.loading = false;
       },

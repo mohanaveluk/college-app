@@ -3,7 +3,7 @@
         [ngStyle]="{'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url(' + college.image_url + ')'}">
         <div class="container">
             <div class="banner-content">
-                <h1>{{ college.name }}</h1>
+                <h1><a [href]="college.website">{{ college.name }}</a></h1>
                 <div class="location">
                     <mat-icon>location_on</mat-icon>
                     <span>{{ college.city }}, {{ college.state.name }}</span>
@@ -42,6 +42,13 @@
                         <div class="info-content">
                             <span class="info-label">Courses</span>
                             <span class="info-value">{{ college.collegeCourses?.length }}</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <mat-icon>language</mat-icon>
+                        <div class="info-content">
+                            <span class="info-label"><a [href]="college.website">Website</a></span>
+                            
                         </div>
                     </div>
                 </mat-card-content>
@@ -167,24 +174,53 @@
                 </button>
 
                 <div class="right-buttons">
-                    <button mat-raised-button color="primary">
+                    <button mat-raised-button color="primary" class="pripamry-icon">
                         <mat-icon>school</mat-icon>
                         Apply Now
                     </button>
 
-                    <button mat-stroked-button>
+                    <button mat-stroked-button (click)="saveCollege($event)" [disabled]="hasInRecent">
                         <mat-icon>bookmark_border</mat-icon>
                         Save
                     </button>
 
-                    <button mat-stroked-button>
+                    <button mat-stroked-button (click)="openShareDialog($event)">
                         <mat-icon>share</mat-icon>
                         Share
                     </button>
                 </div>
             </div>
         </div>
-
+        <div class="pt-5">
+            <app-loading-spinner [show]="loading" [message]="loadingMessage" *ngIf="loading"></app-loading-spinner>
+            <ng-container *ngIf="!isMobile">
+                <section *ngIf="categorySections && categorySections.colleges.length" class="category-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <mat-icon>{{ categorySections.categorySection.icon }}</mat-icon>
+                            <h2>{{ categorySections.categorySection.title }}</h2>
+                        </div>
+                        <p class="section-description">{{ categorySections.categorySection.description }}</p>
+                    </div>
+                
+                    <div class="scroll-container">
+                        <button mat-icon-button class="scroll-button left" (click)="scrollLeft(categorySections)" *ngIf="hasScrollLeft(categorySections)">
+                            <mat-icon>chevron_left</mat-icon>
+                        </button>
+                
+                        <div class="colleges-scroll" [id]="getSectionId(categorySections)" #collegesScroll>
+                            <app-college-info-card-map *ngFor="let college of categorySections.colleges" [college]="college"
+                                (click)="navigateToDetailsPage(college.id)" class="scroll-item"></app-college-info-card-map>
+                        </div>
+                
+                        <button mat-icon-button class="scroll-button right" (click)="scrollRight(categorySections)"
+                            *ngIf="hasScrollRight(categorySections)">
+                            <mat-icon>chevron_right</mat-icon>
+                        </button>
+                    </div>
+                </section>
+            </ng-container>
+        </div>
     </div>
 </div>
 
