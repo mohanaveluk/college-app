@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 import { EmailService } from '../../../shared/services/email.service';
 import { AuthService } from '../../../auth/auth.service';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-college-info-card-map',
@@ -24,11 +25,21 @@ import { AuthService } from '../../../auth/auth.service';
     ImageFallbackPipe
 ],
   templateUrl: './college-info-card-map.component.html',
-  styleUrl: './college-info-card-map.component.scss'
+  styleUrl: './college-info-card-map.component.scss',
+  animations: [
+    trigger('itemEnter', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(20px)' }),
+        animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ])
+  ]
+  
 })
 export class CollegeInfoCardMapComponent {
   @Input() college!: CollegeModel;
   @Input() viewMode: 'grid' | 'list' = 'grid';
+  @Input() isNew = false; // Add this input
   @ViewChild(MatMenuTrigger) menuTrigger!: MatMenuTrigger;
 
   isUserLoggedIn = false;
@@ -106,6 +117,10 @@ export class CollegeInfoCardMapComponent {
   combineAddressLv(collegeItem: CollegeModel): string {
     const {address, city, district, state, zip } = collegeItem;
     return `${address}, ${city}, ${district.name}, ${state.name} ${zip}`;
+  }
+
+  trackByCollegeId(index: number, college: CollegeModel): string {
+    return college.id; // or any unique identifier
   }
 
   openShareDialog(event: MouseEvent): void {

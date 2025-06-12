@@ -2,7 +2,7 @@ import { ApplicationConfig, ErrorHandler, provideZoneChangeDetection } from '@an
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideAnimations, provideNoopAnimations } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { httpErrorInterceptor } from './core/interceptors/http-error.interceptor';
 import { provideClientHydration } from '@angular/platform-browser';
@@ -11,15 +11,20 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { CoreModule } from './core/core.module';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
+    provideAnimationsAsync(),
+    //provideAnimations(),
+    //provideNoopAnimations(),
 
     provideRouter(routes),
     provideAnimations(),
+
     // provideHttpClient(     
     //   withInterceptors([
     //     httpErrorInterceptor, // Handle HTTP errors globally
@@ -59,7 +64,7 @@ export const appConfig: ApplicationConfig = {
         verticalPosition: 'bottom'
       }
     },
-    CoreModule 
+    CoreModule,
   ],
 
 };
