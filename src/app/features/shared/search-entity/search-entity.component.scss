@@ -22,7 +22,43 @@
     .mat-form-field-flex, .mat-mdc-form-field, .mat-mdc-form-field-flex {
       background-color: white !important;
     }
+
+    .narrow-select {
+      width: 100px;  // Narrow closed state
+      overflow: hidden;
+      
+      .mat-form-field-flex {
+        min-width: 50px;
+      }
+      
+      .mat-form-field-infix {
+        width: 50px;
+        border-top: 0;
+        padding: 0;
+      }
+      
+      .mat-select-value {
+        max-width: 50px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
     
+    /* Full width panel when opened */
+    .full-width-panel {
+      min-width: calc(100vw - 32px) !important;  // Full screen width with padding
+      max-width: none !important;
+      
+      .mat-option {
+        white-space: nowrap;
+      }
+      
+      .mat-select-search-inner {
+        width: 100%;
+      }
+    }
+
+
     /* Hover state */
     &:hover .mat-form-field-flex {
       background-color: white !important;
@@ -79,7 +115,7 @@
 
   /* Clear button styles */
 .clear-button {
-    margin-right: -8px; /* Reduce space between clear and search buttons */
+    margin-right: 8px; /* Reduce space between clear and search buttons */
     transform: scale(0.8);
   }
   

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { SharedCommonModule, SharedMaterialModule } from '../../shared/modules';
 import { CategorySectionv2, College, CollegeSearchParams, SearchEntityParams } from '../../core/models/college.model';
 import { CollegeService } from '../../core/services/college.service';
@@ -10,9 +10,13 @@ import { LoadingSpinnerComponent } from "../shared/components/loading-spinner/lo
 import { CollegeModel, CollegeSearchResponse, PaginationInfo, RecentlyViewed } from '../../core/models/search-response.model';
 import { CollegeInfoCardMapComponent } from "../shared/college-info-card-map/college-info-card-map.component";
 import { SearchEntityComponent } from "../shared/search-entity/search-entity.component";
-import { throwError } from 'rxjs';
+import { BehaviorSubject, throwError } from 'rxjs';
 import { RecentCollege } from '../../core/models/recent-college.model';
 import { AuthService } from '../../auth/auth.service';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { animate, style, transition, trigger } from '@angular/animations';
+
+
 @Component({
   selector: 'app-college-search',
   imports: [
@@ -22,19 +26,40 @@ import { AuthService } from '../../auth/auth.service';
     //CollegeInfoCardComponent,
     LoadingSpinnerComponent,
     CollegeInfoCardMapComponent,
-    SearchEntityComponent
+    SearchEntityComponent,
+    SearchFormComponent
 ],
   templateUrl: './college-search.component.html',
-  styleUrl: './college-search.component.scss'
+  styleUrl: './college-search.component.scss',
+  host: {
+    '[@itemEnter]': '',
+    '[@.disabled]': '!isNew'
+  },
+  animations: [
+    trigger('itemEnter', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(20px)' }),
+        animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ])
+  ]
 })
 export class CollegeSearchComponent implements OnInit {
   @ViewChildren('collegesScroll') collegesScrollElements!: QueryList<ElementRef>;
+  @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
+  viewportHeight = 'calc(100vh - 200px)'; // Adjust as needed
 
-  colleges: College[] = [];
+  colleges1: College[] = [];
   recentColleges: CollegeModel[] = [];
+  colleges: CollegeModel[] = [];
+  private newItems: CollegeModel[] = [];
+  colleges$ = new BehaviorSubject<CollegeModel[]>([]);
   searchResults!: CollegeSearchResponse<CollegeModel>;
   pagination: PaginationInfo = {};
   resultCount = 0;
+  private scrollPosition = 0;
+  // Track newly added items
+  private newItemIds = new Set<string>();
 
   isUserLoggedIn = false;
   recentCollege: RecentCollege[] = [];
@@ -57,7 +82,7 @@ export class CollegeSearchComponent implements OnInit {
   viewMode: 'grid' | 'list' = 'grid';
   searchParams: SearchEntityParams = {};// CollegeSearchParams = {};
   currentPage = 1;
-  itemsPerPage = 50;
+  itemsPerPage = 20;
   isMobile = window.innerWidth <= 768;
   error: string | null = null;
   hasInRecent = false;
@@ -77,12 +102,12 @@ export class CollegeSearchComponent implements OnInit {
     });
     this.collegeService.recentColleges$.subscribe(colleges => {
       // Handle the updated list of recent colleges
-      this.loadRecentColleges();
+      //this.loadRecentColleges();
       console.log('Recently viewed colleges:', colleges);
     });
     this.authService.isUserLoggedIn().subscribe(isLoggedIn => {
       this.isUserLoggedIn = isLoggedIn;
-      this.loadRecentColleges();
+      //this.loadRecentColleges();
     });
   }
   
@@ -97,6 +122,9 @@ export class CollegeSearchComponent implements OnInit {
   }
   
   onSearch(params: CollegeSearchParams): void {
+    this.currentPage = 1;
+    this.resultCount = 0;
+    this.scrollPosition = 0;
     this.searchParams = { ...params };
     this.updateQueryParams();
     this.loadColleges();
@@ -127,9 +155,38 @@ export class CollegeSearchComponent implements OnInit {
     this.collegeService.searchCollegex(this.searchParams).subscribe({
       next: (response) => {
         this.searchResults = response;
-        this.resultCount = this.searchResults?.data ? this.searchResults.data.length : 0;
+        this.newItems = response.data || []; // Store only new items
+        // Store new item IDs for animation tracking
+        response.data?.forEach(college => this.newItemIds.add(college.id));
+        
+        
+        // For first page load, replace the data
+        if (this.currentPage === 1) {
+          this.colleges = response.data || [];
+        }
+        // For subsequent loads, append the data
+        else {
+          this.colleges = [...this.colleges, ...(response.data || [])];
+        }
+        
+        this.colleges$.next(this.colleges);
+        this.resultCount += this.searchResults?.data ? this.searchResults.data.length : 0;
         this.pagination = this.searchResults?.pagination || { total: 0, page: 0, limit: 10, totalPages: 0 };
         this.loading = false;
+        // Force change detection
+        this.cdr.detectChanges();
+
+        // Restore scroll position after render
+        // Restore scroll position after Angular updates the view
+        requestAnimationFrame(() => {
+          window.scrollTo({
+            top: this.scrollPosition,
+            behavior: 'auto'
+          });
+        });
+
+        setTimeout(() => this.newItemIds.clear(), 1000);
+
       },
       error: (error) => {
         console.error('Search failed:', error);
@@ -149,6 +206,11 @@ export class CollegeSearchComponent implements OnInit {
       }
     });
   }
+
+  // Add this method to check if item is new
+  isNewItem(college: CollegeModel): boolean {
+    return this.newItemIds.has(college.id);
+  }  
 
   loadRecentColleges1(): void {
     this.loading = true;
@@ -233,10 +295,17 @@ export class CollegeSearchComponent implements OnInit {
   loadMore(): void {
     // In a real app, you would implement pagination
     // For now, we'll just show a message
+    // Save current scroll position
+    this.scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
     this.currentPage++;
     this.searchParams.page = this.currentPage;
+    this.loadColleges();
   }
   
+  trackByCollegeId(index: number, college: CollegeModel): string {
+    return college.id; // or any unique identifier
+  }
+
   navigateToDetails(id: number): void {
     this.router.navigate(['/colleges', id]);
   }

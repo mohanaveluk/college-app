@@ -30,6 +30,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDividerModule } from '@angular/material/divider';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+
 @NgModule({
   exports: [
     MatButtonModule,
@@ -63,7 +65,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatSlideToggleModule,
     MatGridListModule,
     MatDividerModule,
-    
+    ScrollingModule
   ]
 })
 export class SharedMaterialModule { }

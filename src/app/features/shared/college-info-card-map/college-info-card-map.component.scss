@@ -36,6 +36,10 @@
     cursor: pointer;
   }
 
+  .card-content-wrapper mat-card-header mat-card-subtitle {
+    cursor: auto;
+  }
+
   .list-view {
     display: block;
     margin-bottom: 16px;
