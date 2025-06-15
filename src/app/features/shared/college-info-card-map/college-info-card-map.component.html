@@ -10,16 +10,16 @@
       </div>
     </div>
     
-    <div class="card-content-wrapper">
-      <mat-card-header (click)="onCardClick($event)">
-        <mat-card-title [matTooltip]="college.name.length > 40 ? college.name: ''">{{ college.name | truncate:40}}</mat-card-title>
-        <mat-card-subtitle>{{ combineAddress(college) | capitalize:'first-of-each' | truncate:40 }}</mat-card-subtitle>
+    <div class="card-content-wrapper"  (click)="stopPropagation($event)">
+      <mat-card-header>
+        <mat-card-title [matTooltip]="college.name.length > 40 ? college.name: ''"  (click)="onCardClick($event)">{{ college.name | truncate:40}}</mat-card-title>
+        <mat-card-subtitle  (click)="stopPropagation($event)">{{ combineAddress(college) | capitalize:'first-of-each' | truncate:40 }}</mat-card-subtitle>
       </mat-card-header>
       
       <mat-card-content class="college-card-content">
         <div *ngIf="viewMode === 'list'" class="list-view-layout">
           <div class="list-image-container">
-            <img [src]="college.image_url" [alt]="college.name + ' image'" class="list-image">
+            <img [src]="college.image_url! | imageFallback:'images/college/greyed.jpg'" [alt]="college.name + ' image'" class="list-image">
             <mat-chip-listbox>
               <mat-chip [ngClass]="college.category" disableRipple>
                 {{ college.category | titlecase }}

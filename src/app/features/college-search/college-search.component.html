@@ -5,11 +5,10 @@
       </div>
     </div> -->
     <app-search-entity [initialSearchParams]="searchParams" (search)="onSearch($event)"></app-search-entity>
-
+    
     <div class="container">
       <!-- <app-search-form [initialSearchParams]="searchParams" (search)="onSearch($event)">
       </app-search-form> -->
-
       <div class="view-options">
         <div class="filters-applied">
           <span *ngIf="hasFilters()" class="filters-label">Filters applied:</span>

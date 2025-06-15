@@ -26,7 +26,8 @@ import { animate, style, transition, trigger } from '@angular/animations';
     //CollegeInfoCardComponent,
     LoadingSpinnerComponent,
     CollegeInfoCardMapComponent,
-    SearchEntityComponent
+    SearchEntityComponent,
+    SearchFormComponent
 ],
   templateUrl: './college-search.component.html',
   styleUrl: './college-search.component.scss',
@@ -121,9 +122,12 @@ export class CollegeSearchComponent implements OnInit {
   }
   
   onSearch(params: CollegeSearchParams): void {
+    this.currentPage = 1;
+    this.resultCount = 0;
+    this.scrollPosition = 0;
     this.searchParams = { ...params };
     this.updateQueryParams();
-    //this.loadColleges();
+    this.loadColleges();
   }
 
   checkScrollButtonsVisibility(): void {
@@ -154,8 +158,8 @@ export class CollegeSearchComponent implements OnInit {
         this.newItems = response.data || []; // Store only new items
         // Store new item IDs for animation tracking
         response.data?.forEach(college => this.newItemIds.add(college.id));
-        this.colleges = [...this.colleges, ...(this.newItems || [])]; // Append to existing
-        /*
+        
+        
         // For first page load, replace the data
         if (this.currentPage === 1) {
           this.colleges = response.data || [];
@@ -164,7 +168,7 @@ export class CollegeSearchComponent implements OnInit {
         else {
           this.colleges = [...this.colleges, ...(response.data || [])];
         }
-        */
+        
         this.colleges$.next(this.colleges);
         this.resultCount += this.searchResults?.data ? this.searchResults.data.length : 0;
         this.pagination = this.searchResults?.pagination || { total: 0, page: 0, limit: 10, totalPages: 0 };
