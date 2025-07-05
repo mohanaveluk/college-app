@@ -65,6 +65,12 @@
   }
   
   @media (max-width: 768px) {
+    .container {
+      width: 100vw;
+      max-width: 100vw;
+      padding: 8px;
+    }  
+        
     .view-options {
       flex-direction: column;
       align-items: flex-start;

@@ -336,25 +336,76 @@
   }
   
   @media (max-width: 960px) {
+    .container {
+      width: 98vw;
+      max-width: 98vw;
+      padding: 16px;
+    }
+
     .college-content {
       grid-template-columns: 1fr;
     }
   }
   
   @media (max-width: 768px) {
+    .container {
+      width: 100vw;
+      max-width: 100vw;
+      padding: 8px;
+    }    
     .college-banner {
       padding: 40px 0;
     }
-    
+
     .banner-content h1 {
       font-size: 1.8rem;
     }
-    
+
     .actions-wrapper {
       flex-direction: column;
     }
-    
+
     .actions-wrapper button {
       width: 100%;
     }
+
+    .colleges-scroll,
+    .scroll-container {
+      padding-left: 8px !important;
+      padding-right: 8px !important;
+      margin: 0 auto !important;
+      width: 100vw;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+    }
+
+    .scroll-item,
+    app-college-info-card-map,
+    mat-card1 {
+      margin: 0 0 16px 0 !important;
+      width: 100% !important;
+      max-width: 100vw !important;
+      box-sizing: border-box;
+      display: block;
+    }
+
+    mat-card {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+
+    .category-section {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    .section-header,
+    .section-title,
+    .section-description {
+      text-align: center;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
   }
+
