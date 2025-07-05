@@ -48,4 +48,4 @@ images:
 - 'gcr.io/$PROJECT_ID/college-app:$BUILD_ID'
 
 timeout: 1800s
-logs: GCS_ONLY
+logging: GCS_ONLY
