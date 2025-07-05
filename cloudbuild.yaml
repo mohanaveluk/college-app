@@ -39,8 +39,7 @@ steps:
   waitFor: ['fetch-build-log']
   id: 'create-artifacts-zip'
 logsBucket: 'gs://logs-codebuild-webapp-$PROJECT_ID/$BUILD_ID'
-options:
-  logging: GCS_ONLY
+
 
 images:
 - 'gcr.io/$PROJECT_ID/college-app:latest'
@@ -48,4 +47,3 @@ images:
 - 'gcr.io/$PROJECT_ID/college-app:$BUILD_ID'
 
 timeout: 1800s
-logging: GCS_ONLY
