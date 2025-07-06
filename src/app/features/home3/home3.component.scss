@@ -260,6 +260,13 @@
         grid-template-columns: 1fr;
     }
   
+    .categories-section {
+      padding: 5px;
+    }
+
+    .categories-section h2 {
+      padding-left: 05px;
+    }
     /*.scroll-item {
       flex: 0 0 280px;
     }*/
@@ -273,6 +280,14 @@
   
     .section-title h2 {
       font-size: 1.3rem;
+    }
+
+    .categories-section {
+      padding: 5px;
+    }
+
+    .categories-section h2{
+      padding-left: 10px;
     }
   }
   
