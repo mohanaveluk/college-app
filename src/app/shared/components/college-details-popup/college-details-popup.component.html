@@ -1,0 +1,219 @@
+<div class="popup-overlay">
+  <div class="popup-container">
+    <div class="popup-header">
+      <h2>{{ college?.name || 'College Details' }}</h2>
+      <button mat-icon-button class="close-button" (click)="closePopup()">
+        <mat-icon style="color: white;">close</mat-icon>
+      </button>
+    </div>
+    
+    <div class="popup-content">
+      <div *ngIf="loading" class="loading-container">
+        <mat-spinner></mat-spinner>
+        <p>Loading college details...</p>
+      </div>
+      
+      <div *ngIf="college && !loading" class="college-details-wrapper">
+        <div class="college-banner" [ngStyle]="{'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url(' + college.image_url + ')'}">
+          <div class="banner-content">
+            <h1><a [href]="college.website">{{ college.name }}</a></h1>
+            <div class="location">
+              <mat-icon>location_on</mat-icon>
+              <span>{{ college.city }}, {{ college.state.name }}</span>
+            </div>
+            <mat-chip-listbox>
+              <mat-chip [ngClass]="college.category" highlighted>
+                {{ college.category | titlecase }}
+              </mat-chip>
+            </mat-chip-listbox>
+          </div>
+        </div>
+
+        <div class="college-content">
+          <mat-card class="quick-info-card">
+            <mat-card-content>
+                <div class="info-item">
+                    <mat-icon>star</mat-icon>
+                    <div class="info-content">
+                        <span class="info-label">Rating</span>
+                        <span class="info-value">{{ college.rating | number:'1.0-1' }}/5</span>
+                    </div>
+                </div>
+            
+                <div class="info-item">
+                    <mat-icon>calendar_today</mat-icon>
+                    <div class="info-content">
+                        <span class="info-label">Established</span>
+                        <span class="info-value">{{ college.established }}</span>
+                    </div>
+                </div>
+            
+                <div class="info-item">
+                    <mat-icon>school</mat-icon>
+                    <div class="info-content">
+                        <span class="info-label">Courses</span>
+                        <span class="info-value">{{ college.collegeCourses?.length }}</span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <mat-icon>language</mat-icon>
+                    <div class="info-content">
+                        <span class="info-label"><a [href]="college.website">Website</a></span>
+                    </div>
+                </div>
+            </mat-card-content>
+          </mat-card>
+          
+          <mat-card class="details-card">
+            <mat-card-content>
+              <mat-tab-group animationDuration="300ms">
+                <mat-tab label="Overview">
+                  <div class="tab-content">
+                    <h2>About {{ college.name }}</h2>
+                    <p>{{ college.description }}</p>
+                    
+                    <h3>Address</h3>
+                    <p>{{ college.address }}</p>
+                    
+                    <h3>Available Courses</h3>
+                    <div class="courses-list">
+                      <mat-chip-listbox>
+                        <mat-chip *ngFor="let course of college.collegeCourses" disableRipple>
+                          {{ course.course.name }}
+                        </mat-chip>
+                      </mat-chip-listbox>
+                    </div>
+                  </div>
+                </mat-tab>
+                
+                <mat-tab label="Performance">
+                    <div class="tab-content" *ngIf="!college.performances?.length">
+                        <h2>Performance Indicators</h2>
+                        <p>No performance data available.</p>
+                    </div>
+                  <div class="tab-content" *ngIf="college.performances && college.performances.length">
+                    <h2>Performance Indicators</h2>
+                    
+                    <div class="performance-stats">
+                      <div class="stat-item">
+                        <div class="stat-header">
+                          <span class="stat-title">Placements</span>
+                          <span class="stat-value">{{ college.performances[0].placements }}%</span>
+                        </div>
+                        <mat-progress-bar 
+                          mode="determinate"
+                          [value]="college.performances[0].placements"
+                          color="primary"
+                        ></mat-progress-bar>
+                      </div>
+                      
+                      <div class="stat-item">
+                        <div class="stat-header">
+                          <span class="stat-title">Research Output</span>
+                          <span class="stat-value">{{ college.performances[0].research }}%</span>
+                        </div>
+                        <mat-progress-bar 
+                          mode="determinate"
+                          [value]="college.performances[0].research"
+                          color="accent"
+                        ></mat-progress-bar>
+                      </div>
+                      
+                      <div class="stat-item">
+                        <div class="stat-header">
+                          <span class="stat-title">Infrastructure</span>
+                          <span class="stat-value">{{ college.performances[0].infrastructure }}%</span>
+                        </div>
+                        <mat-progress-bar 
+                          mode="determinate"
+                          [value]="college.performances[0].infrastructure"
+                          color="primary"
+                        ></mat-progress-bar>
+                      </div>
+                      
+                      <div class="stat-item">
+                        <div class="stat-header">
+                          <span class="stat-title">Teaching Quality</span>
+                          <span class="stat-value">{{ college.performances[0].teaching }}%</span>
+                        </div>
+                        <mat-progress-bar 
+                          mode="determinate"
+                          [value]="college.performances[0].teaching"
+                          color="accent"
+                        ></mat-progress-bar>
+                      </div>
+                    </div>
+                  </div>
+                </mat-tab>
+                
+                <mat-tab label="Contact">
+                  <div class="tab-content">
+                    <h2>Contact Information</h2>
+                    
+                    <div class="contact-info">
+                      <div class="contact-item">
+                        <mat-icon>phone</mat-icon>
+                        <span>{{ college.phone }}</span>
+                      </div>
+                      
+                      <div class="contact-item">
+                        <mat-icon>email</mat-icon>
+                        <span>{{ college.email }}</span>
+                      </div>
+                      
+                      <div class="contact-item">
+                        <mat-icon>language</mat-icon>
+                        <span>{{ college.website }}</span>
+                      </div>
+                      
+                      <div class="contact-item">
+                        <mat-icon>location_on</mat-icon>
+                        <span>{{ college.address }}</span>
+                      </div>
+                    </div>
+                    
+                    <h3 class="map-title">Location</h3>
+                    <div class="map-placeholder">
+                      <div class="map-overlay">
+                        <mat-icon>map</mat-icon>
+                        <p>Map will be displayed here</p>
+                      </div>
+                    </div>
+                  </div>
+                </mat-tab>
+              </mat-tab-group>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        
+        <div class="college-content">
+            <div>&nbsp;</div>
+        
+            <div class="actions-wrapper">
+                <button mat-raised-button color="primary" class="pripamry-icon">
+                    <mat-icon>school</mat-icon>
+                    Apply Now
+                </button>
+        
+                <button mat-stroked-button (click)="saveCollege($event)" [disabled]="hasInRecent">
+                    <mat-icon>bookmark_border</mat-icon>
+                    Save
+                </button>
+        
+                <button mat-stroked-button (click)="openShareDialog($event)">
+                    <mat-icon>share</mat-icon>
+                    Share
+                </button>
+            </div>
+        </div>
+      </div>
+      
+      <div *ngIf="!college && !loading" class="error-container">
+        <mat-icon>error</mat-icon>
+        <h2>College not found</h2>
+        <p>The requested college details could not be loaded.</p>
+        <button mat-raised-button color="primary" (click)="closePopup()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
 import { SharedCommonModule, SharedMaterialModule } from '../../shared/modules';
 import { CollegeCardComponent } from '../shared/college-card/college-card.component';
 //import { CategorySection } from '../../core/models/college.model';
@@ -12,6 +12,7 @@ import { CollegeModel, RecentlyViewed } from '../../core/models/search-response.
 import { Category, CategoryService } from '../../core/services/categoryService';
 import { AuthService } from '../../auth/auth.service';
 import { LoadingSpinnerComponent } from "../shared/components/loading-spinner/loading-spinner.component";
+import { CollegeDetailsPopupComponent } from "../../shared/components/college-details-popup/college-details-popup.component";
 
 @Component({
   selector: 'app-home3',
@@ -21,7 +22,8 @@ import { LoadingSpinnerComponent } from "../shared/components/loading-spinner/lo
     //CollegeInfoCardComponent,
     CollegeInfoCardMapComponent,
     SearchEntityComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    CollegeDetailsPopupComponent
 ],
   templateUrl: './home3.component.html',
   styleUrl: './home3.component.scss'
@@ -61,6 +63,8 @@ export class Home3Component implements OnInit , AfterViewInit {
   searchParams: SearchEntityParams = {};
   searchType = 'keyword';
 
+  showPopup = false;
+  selectedCollegeId = '';
 
   JSON: any;
   
@@ -373,4 +377,15 @@ export class Home3Component implements OnInit , AfterViewInit {
       queryParams: this.searchParams,
     });
   }
+
+  openCollegeDetailsPopup(id: string): void {
+    this.selectedCollegeId = id;
+    this.showPopup = true;
+  }
+
+  closePopup(): void {
+    this.showPopup = false;
+    this.selectedCollegeId = ''; // Reset to default value
+  }
+
 }

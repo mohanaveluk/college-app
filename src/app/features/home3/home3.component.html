@@ -44,7 +44,7 @@
             </button>
       
             <div class="colleges-scroll" [id]="getSectionId(section)" #collegesScroll>
-              <app-college-info-card-map *ngFor="let college of section.colleges" [college]="college"
+              <app-college-info-card-map *ngFor="let college of section.colleges" [college]="college" (collegeClick)="openCollegeDetailsPopup(college.id)"
                 (click)="navigateToDetailsPage(college.id)" class="scroll-item"></app-college-info-card-map>
             </div>
       
@@ -127,3 +127,9 @@
       </div>
     </section>
 </div>
+<!-- College Details Popup -->
+<app-college-details-popup
+  *ngIf="showPopup"
+  [collegeId]="selectedCollegeId"
+  (close)="closePopup()"
+></app-college-details-popup>
