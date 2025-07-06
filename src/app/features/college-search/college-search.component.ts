@@ -15,6 +15,7 @@ import { RecentCollege } from '../../core/models/recent-college.model';
 import { AuthService } from '../../auth/auth.service';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { CollegeDetailsPopupComponent } from "../../shared/components/college-details-popup/college-details-popup.component";
 
 
 @Component({
@@ -27,7 +28,8 @@ import { animate, style, transition, trigger } from '@angular/animations';
     LoadingSpinnerComponent,
     CollegeInfoCardMapComponent,
     SearchEntityComponent,
-    SearchFormComponent
+    SearchFormComponent,
+    CollegeDetailsPopupComponent
 ],
   templateUrl: './college-search.component.html',
   styleUrl: './college-search.component.scss',
@@ -86,6 +88,9 @@ export class CollegeSearchComponent implements OnInit {
   isMobile = window.innerWidth <= 768;
   error: string | null = null;
   hasInRecent = false;
+
+  showPopup = false;
+  selectedCollegeId = '';
 
   constructor(
     private collegeService: CollegeService,
@@ -378,4 +383,16 @@ export class CollegeSearchComponent implements OnInit {
   navigateToDetailsPage(id: string): void {
     this.router.navigate(['/colleges', id]);
   }
+
+  
+  openCollegeDetailsPopup(id: string): void {
+    this.selectedCollegeId = id;
+    this.showPopup = true;
+  }
+
+  closePopup(): void {
+    this.showPopup = false;
+    this.selectedCollegeId = ''; // Reset to default value
+  }
+
 }

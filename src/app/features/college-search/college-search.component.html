@@ -61,7 +61,7 @@
               [viewMode]="viewMode"
               [@itemEnter]="isNewItem(college) ? 'enter' : 'void'"
               [class.new-item]="isNewItem(college)"
-              (click)="navigateToDetail(college.id)"
+              (collegeClick)="openCollegeDetailsPopup(college.id)"
             ></app-college-info-card-map>
             
           </div>
@@ -117,4 +117,10 @@
             </ng-container>
       </div>
     </div>
+  <!-- College Details Popup -->
+  <app-college-details-popup
+    *ngIf="showPopup"
+    [collegeId]="selectedCollegeId"
+    (close)="closePopup()"
+  ></app-college-details-popup>
   </div>

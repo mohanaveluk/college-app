@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { College } from '../../../core/models/college.model';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
@@ -14,6 +14,7 @@ import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 import { EmailService } from '../../../shared/services/email.service';
 import { AuthService } from '../../../auth/auth.service';
 import { animate, style, transition, trigger } from '@angular/animations';
+//import { CollegeDetailsPopupComponent } from "../../../shared/components/college-details-popup/college-details-popup.component";
 
 @Component({
   selector: 'app-college-info-card-map',
@@ -22,7 +23,8 @@ import { animate, style, transition, trigger } from '@angular/animations';
     SharedMaterialModule,
     TruncatePipe,
     CapitalizePipe,
-    ImageFallbackPipe
+    ImageFallbackPipe,
+    //CollegeDetailsPopupComponent
 ],
   templateUrl: './college-info-card-map.component.html',
   styleUrl: './college-info-card-map.component.scss',
@@ -41,10 +43,14 @@ export class CollegeInfoCardMapComponent {
   @Input() viewMode: 'grid' | 'list' = 'grid';
   @Input() isNew = false; // Add this input
   @ViewChild(MatMenuTrigger) menuTrigger!: MatMenuTrigger;
+  @Output() collegeClick = new EventEmitter<string>();
 
   isUserLoggedIn = false;
   error: string | null = null;
   recentCollege: RecentCollege[] = [];
+
+  showPopup = false;
+  selectedCollegeId = '';
 
   constructor(
     private router: Router,
@@ -61,7 +67,10 @@ export class CollegeInfoCardMapComponent {
   onCardClick(event: MouseEvent): void {
     // Don't navigate if clicking on the menu trigger or menu items
     if (!(event.target as HTMLElement).closest('.menu-trigger, .mat-menu-item')) {
-      this.router.navigate(['/colleges', this.college.id]);
+      //this.router.navigate(['/colleges', this.college.id]);
+      //this.openCollegeDetailsPopup(this.college.id);
+      this.stopPropagation(event);
+      this.collegeClick.emit(this.college.id);
     }
   }
 
@@ -152,5 +161,15 @@ export class CollegeInfoCardMapComponent {
         });
       }
     });
+  }
+
+  openCollegeDetailsPopup(id: string): void {
+    this.selectedCollegeId = id;
+    this.showPopup = true;
+  }
+
+  closePopup(): void {
+    this.showPopup = false;
+    this.selectedCollegeId = ''; // Reset to default value
   }
 }
