@@ -102,12 +102,12 @@
         </mat-expansion-panel-header>
 
         <p class="mobile-section-description">{{ section.categorySection.description }}</p>
-
+        <!-- (click)="navigateToDetailsPage(college.id)" -->
         <div class="mobile-colleges-grid">
           <app-college-info-card-map 
             *ngFor="let college of section.colleges"
             [college]="college"
-            (click)="navigateToDetailsPage(college.id)"
+            (collegeClick)="openCollegeDetailsPopup(college.id)"
             class="mobile-college-card"
           ></app-college-info-card-map>
         </div>
