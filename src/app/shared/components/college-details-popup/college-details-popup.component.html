@@ -21,7 +21,7 @@
               <mat-icon>location_on</mat-icon>
               <span>{{ college.city }}, {{ college.state.name }}</span>
             </div>
-            <mat-chip-listbox>
+            <mat-chip-listbox *ngIf="college.category">
               <mat-chip [ngClass]="college.category" highlighted>
                 {{ college.category | titlecase }}
               </mat-chip>
