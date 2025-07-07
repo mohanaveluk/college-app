@@ -140,6 +140,26 @@
   }
 }
 
+/* courses.component.css */
+.course-list-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+mat-list-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+}
+
+mat-icon {
+  margin-right: 12px;
+}
+
 .college-content {
   display: grid;
   grid-template-columns: 300px 1fr;
@@ -320,7 +340,7 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 767px) {
   .popup-header {
     padding: 12px 16px;
 
@@ -339,5 +359,46 @@
 
   .actions-wrapper {
     padding: 0 12px;
+  }
+
+    .course-list-container {
+        padding: 12px;
+    }
+
+  .course-list-container {
+    padding: 8px;
+  }
+
+  mat-list-item {
+    font-size: 14px;
+    padding: 6px 0;
+  }
+
+  mat-icon {
+    margin-left: 1px !important;
+    margin-right: 8px !important;
+  }
+
+}
+
+/* Tablet view */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .mat-mdc-card-content {
+        display: block;
+        padding: 0 10px;
+    }
+
+  .course-list-container {
+    padding: 10px;
+  }
+
+  mat-list-item {
+    font-size: 15px;
+    padding: 8px 0;
+  }
+
+  mat-icon {
+    margin-left: 1px !important;
+    margin-right: 10px !important;
   }
 }

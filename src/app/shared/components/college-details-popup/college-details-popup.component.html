@@ -79,10 +79,19 @@
                     <div class="courses-list">
                       <mat-chip-listbox>
                         <mat-chip *ngFor="let course of college.collegeCourses" disableRipple>
-                          {{ course.course.name }}
+                          {{ course.course ? course.course.name : '' }}
                         </mat-chip>
                       </mat-chip-listbox>
                     </div>
+                    <!-- courses.component.html -->
+                    <!-- <div class="course-list-container">
+                        <mat-list>
+                            <mat-list-item *ngFor="let course of college.collegeCourses">
+                                <mat-icon matListItemIcon>adjust</mat-icon> 
+                                <div matListItemTitle>{{ course.course ? course.course.name : '' }}</div>
+                            </mat-list-item>
+                        </mat-list>
+                    </div> -->
                   </div>
                 </mat-tab>
                 
